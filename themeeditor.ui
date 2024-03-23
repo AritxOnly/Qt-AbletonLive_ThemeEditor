@@ -27,7 +27,6 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionNre"/>
     <addaction name="actionSave"/>
     <addaction name="actionSave_as"/>
     <addaction name="separator"/>

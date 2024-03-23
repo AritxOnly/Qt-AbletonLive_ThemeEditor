@@ -10,9 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
+    pugixml.cpp \
     themeeditor.cpp
 
 HEADERS += \
+    pugiconfig.hpp \
+    pugixml.hpp \
     themeeditor.h
 
 FORMS += \
@@ -22,3 +25,13 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resource.qrc
+
+# 编译后应用图标设置
+RC_FILE += \
+    resource/logo.rc
+
+# 编译后生成exe名称设置
+TARGET = LiveThemeEditor

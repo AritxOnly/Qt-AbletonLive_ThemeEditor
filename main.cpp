@@ -8,7 +8,8 @@ int main(int argc, char *argv[])
     ThemeEditor w;
 
     //窗体设定：标题，图标
-    w.setWindowTitle("Ableton Live主题编辑器");
+    w.setWindowTitle("Ableton Live Theme Editor");
+    w.setWindowIcon(QIcon(":/ico/resource/logo.ico"));
 
 
     w.show();
