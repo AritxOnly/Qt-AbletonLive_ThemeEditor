@@ -16,6 +16,7 @@ SOURCES += \
 
 HEADERS += \
     filehandler.h \
+    qheaders.h \
     themedata.h \
     themeeditor.h
 

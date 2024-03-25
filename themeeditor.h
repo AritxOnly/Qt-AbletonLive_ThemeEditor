@@ -1,7 +1,7 @@
 #ifndef THEMEEDITOR_H
 #define THEMEEDITOR_H
 
-#include <QMainWindow>
+#include "qheaders.h"
 #include "themedata.h"
 #include "filehandler.h"
 
@@ -21,7 +21,9 @@ public:
 
 private:
     Ui::ThemeEditor *ui;
-    QString fileDir;    //文件路径
-    ThemeData td;
+    FileHandler fileHandler;
+    ThemeData themeData;
+
+    QStandardItemModel* themeItemModel;
 };
 #endif // THEMEEDITOR_H

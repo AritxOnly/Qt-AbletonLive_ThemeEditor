@@ -1,9 +1,7 @@
 #ifndef FILEHANDLER_H
 #define FILEHANDLER_H
 
-#include <QString>
-#include <QSettings>
-#include <QDir>
+#include "qheaders.h"
 
 class FileHandler
 {

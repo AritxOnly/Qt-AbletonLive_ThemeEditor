@@ -1,9 +1,7 @@
 #ifndef THEMEDATA_H
 #define THEMEDATA_H
 
-#include <QFile>
-#include <QDebug>
-
+#include "qheaders.h"
 class ThemeData
 {
 public:
