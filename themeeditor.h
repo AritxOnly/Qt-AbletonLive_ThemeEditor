@@ -19,6 +19,8 @@ public:
     ThemeEditor(QWidget *parent = nullptr);
     ~ThemeEditor();
 
+    void ThemeListDoubleClicked(const QModelIndex &index);
+
 private:
     Ui::ThemeEditor *ui;
     FileHandler fileHandler;

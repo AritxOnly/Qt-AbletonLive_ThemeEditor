@@ -19,6 +19,8 @@ int main(int argc, char *argv[])
     w.setWindowIcon(QIcon(":/ico/resource/logo.ico"));
 
 
+//    w.setWindowFlags(Qt::FramelessWindowHint);
+
     w.show();
     return a.exec();
 

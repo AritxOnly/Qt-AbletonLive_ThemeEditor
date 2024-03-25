@@ -93,7 +93,7 @@ bool ThemeData::LoadData(const QByteArray& fileName)
     if(!file.open(QIODevice::ReadOnly|QIODevice::Text))return false;
     auto dat = file.readAll();
     file.close();
-
+    v.clear();
     auto bg = dat.begin(),ded = dat.end();
     while(*(bg++)!='\n');
     while(true)

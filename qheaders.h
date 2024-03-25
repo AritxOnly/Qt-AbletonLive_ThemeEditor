@@ -8,5 +8,7 @@
 #include <QDebug>
 #include <QStandardItem>
 #include <QFile>
+#include <QPainter>
+#include <Qlabel>
 
 #endif // QHEADERS_H

@@ -3,7 +3,10 @@
 #include "ui_themeeditor.h"
 
 
-
+void ThemeEditor::ThemeListDoubleClicked(const QModelIndex &index)
+{
+    themeData.LoadData((fileHandler.folderPath+themeItemModel->data(index).toString()).toUtf8());
+}
 
 
 ThemeEditor::ThemeEditor(QWidget *parent)
@@ -17,7 +20,6 @@ ThemeEditor::ThemeEditor(QWidget *parent)
 
 
     themeItemModel = new QStandardItemModel(ui->themeList);
-//    themeItemModel->appendRow(new QStandardItem("Hello"));
     ui->themeList->setModel(themeItemModel);
 
     for(auto& str:fileHandler.fileList)
@@ -25,7 +27,7 @@ ThemeEditor::ThemeEditor(QWidget *parent)
         themeItemModel->appendRow(new QStandardItem(str));
     }
 
-
+    connect(ui->themeList, &QListView::doubleClicked, this, &ThemeEditor::ThemeListDoubleClicked);
 
 }
 
