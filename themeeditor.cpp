@@ -1,6 +1,8 @@
 #include "themeeditor.h"
+
 #include "ui_themeeditor.h"
-#include "pugixml.hpp"
+
+
 #include <QDebug>
 #include <QAction>
 #include <QColorDialog>
@@ -14,24 +16,21 @@ ThemeEditor::ThemeEditor(QWidget *parent)
 {
     ui->setupUi(this);
 
-
+    FileHandler();
     //
     //文件打开
     connect(ui->actionOpen, &QAction::triggered, this, [=]() {
         fileDir = QFileDialog::getOpenFileName(this,
                                                "Open file",
                                                fileDir,
-                                               tr("*")); //弹出文件选择框，存储文件路径
-        bool isRead = readAskFile(fileDir.toStdString().c_str());   //QString转const char*传参
-        if(!isRead)
-        {
-            QMessageBox::warning(this, "Warning", "File-parsing failed.\nPlease retry!");
-        }
+                                               tr(".ask")); //弹出文件选择框，存储文件路径
+        td.LoadData(fileDir.toUtf8());
+
     });
 
     //文件保存
     connect(ui->actionSave, &QAction::triggered, this, [=]() {
-        parsed_askFile.save_file(fileDir.toStdString().c_str());
+
     });
 
     //文件另存为
@@ -40,7 +39,7 @@ ThemeEditor::ThemeEditor(QWidget *parent)
                                                "Save file as...",
                                                fileDir,
                                                tr("*.ask"));
-        parsed_askFile.save_file(fileDir.toStdString().c_str());
+        td.SaveData(fileDir.toUtf8());
     });
 
     //
@@ -72,10 +71,3 @@ ThemeEditor::~ThemeEditor()
     delete ui;
 }
 
-bool ThemeEditor::readAskFile(const char *fileDir)
-{
-    if(!parsed_askFile.load_file(fileDir, pugi::parse_default, pugi::encoding_utf8))
-        return false;
-
-    return true;
-}

@@ -9,13 +9,14 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    filehandler.cpp \
     main.cpp \
-    pugixml.cpp \
+    themedata.cpp \
     themeeditor.cpp
 
 HEADERS += \
-    pugiconfig.hpp \
-    pugixml.hpp \
+    filehandler.h \
+    themedata.h \
     themeeditor.h
 
 FORMS += \
