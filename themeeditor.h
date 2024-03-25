@@ -19,9 +19,18 @@ public:
     ThemeEditor(QWidget *parent = nullptr);
     ~ThemeEditor();
 
+    void initListWidget(QStringList);
+
+public slots:
+    void onDoubleClickedItem();
+    void onButtonHelpClicked();
+
 private:
     Ui::ThemeEditor *ui;
-    QString fileDir;    //文件路径
+    FileHandler file;
     ThemeData td;
+    QString fileDir;
+
+    bool isFileLoad;
 };
 #endif // THEMEEDITOR_H
