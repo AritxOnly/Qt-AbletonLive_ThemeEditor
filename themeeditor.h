@@ -4,6 +4,7 @@
 #include "qheaders.h"
 #include "themedata.h"
 #include "filehandler.h"
+#include "graphicalinterface.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,6 +28,7 @@ public:
     void SaveSaveAsClicked();
     void SaveSaveAsAltered();
     void HelpButtonClicked();
+    void OpenFolderButtonClicked();
     void ThemeModified();
 
 private:

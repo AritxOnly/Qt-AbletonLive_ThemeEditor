@@ -7,5 +7,6 @@
     </qresource>
     <qresource prefix="/pics">
         <file>resources/pics/help-filling.png</file>
+        <file>resources/pics/file-open.png</file>
     </qresource>
 </RCC>

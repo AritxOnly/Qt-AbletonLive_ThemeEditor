@@ -56,9 +56,12 @@ ThemeEditor::ThemeEditor(QWidget *parent)
     ui->saveSaveAs->installEventFilter(new ClickPositionFilter(ui->saveSaveAs));
 
 
+    ui->currentTheme->setAlignment(Qt::AlignCenter);
     //
     //关于和帮助
     connect(ui->helpButton, &QPushButton::clicked, this, &ThemeEditor::HelpButtonClicked);
+
+    connect(ui->openFolderButton,&QPushButton::clicked, this, &ThemeEditor::OpenFolderButtonClicked);
 
     themeData.BindOnModified(this,&ThemeEditor::ThemeModified);
 
@@ -71,6 +74,12 @@ ThemeEditor::ThemeEditor(QWidget *parent)
 //        QString colorHex = QString::number(mRGB, 16);
 //        qDebug() << colorHex;
 //    });
+
+//    auto gi = new GraphicalInterface(ui->demoArea);
+//    QVBoxLayout *vl = new QVBoxLayout(ui->demoArea);
+//    vl->addWidget(gi);
+//    ui->demoArea->setLayout(vl);
+
 
 }
 
@@ -207,24 +216,28 @@ void ThemeEditor::HelpButtonClicked()
     msgBoxHelp.exec();
 }
 
+void ThemeEditor::OpenFolderButtonClicked()
+{
+    QDesktopServices::openUrl(QUrl::fromLocalFile(fileHandler.folderPath));
+}
 void ThemeEditor::ThemeModified()
 {
     ui->currentTheme->setText(currentTheme+"(modified)");
 }
 void ThemeEditor::InitAskListView()
 {
-    ui->askColorList->
-        setStyleSheet("padding: 5px; background-color:#2a2a2a; font-size:15px; color:#c0c0c3;");
+//    ui->askColorList->
+//        setStyleSheet("padding: 5px; background-color:#2a2a2a; font-size:15px; color:#c0c0c3;");
 
-    for(const auto& value : themeData)
-    {
-        QListWidgetItem *item = new QListWidgetItem;
+//    for(const auto& value : themeData)
+//    {
+//        QListWidgetItem *item = new QListWidgetItem;
 
-        //设置子项相关信息
-        item->setSizeHint(QSize(ui->askColorList->width(),50));
-        item->setText(value.name);
-        qDebug() << value.name;
+//        //设置子项相关信息
+//        item->setSizeHint(QSize(ui->askColorList->width(),50));
+//        item->setText(value.name);
+//        qDebug() << value.name;
 
-        ui->askColorList->addItem(item);
-    }
+//        ui->askColorList->addItem(item);
+//    }
 }
