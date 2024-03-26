@@ -21,5 +21,8 @@
 #include <QFontDatabase>
 #include <QMouseEvent>
 #include <QToolButton>
+#include <QColor>
+#include <QColorDialog>
+#include <QByteArray>
 
 #endif // QHEADERS_H

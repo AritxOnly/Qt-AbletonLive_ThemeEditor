@@ -1,0 +1,340 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Ableton MajorVersion="5" MinorVersion="12.0_12049" SchemaChangeCount="3" Creator="Ableton Live 12.0d1" Revision="">
+	<!--Better Color Ableton 12 by AritxOnly-->
+	<Theme>
+	<!--edit notes-->
+	<!--47,49,55已全部替换成2f3137-->
+	<!--144,147,152已全部替换为909398-->
+	<!--222,76,79 de564f-->
+	<!--117,189,147 75bd93-->
+	<!--55,58,63 373a3f-->
+	<!--33,35,38 212326-->
+	<!--212326 373a3f 75bd93 de564f 909398 2f3137 f0ad42-->
+		<ControlForeground Value="#ebf1f2" />
+		<TextDisabled Value="#afb2b6" />
+		<ControlDisabled Value="#2f3137" />
+		<!--应该是控制EQ等背景颜色的参数值-->
+		<MeterBackground Value="#1c1e21" />
+		<!--高亮与区域-->
+		<SurfaceHighlight Value="#3f434a" />
+		<SurfaceArea Value="#26282c" />
+		<Desktop Value="#2f3137" />
+		<ViewCheckControlEnabledOn Value="#efad43" />
+		<ScrollbarInnerHandle Value="#515661" />
+		<ScrollbarInnerTrack Value="#00000000" />
+		<!--11版本的主题中的OuterHandle词条在12不存在-->
+		<!--主题色2-->
+		<ScrollbarLCDHandle Value="#798cd2" />
+		<!--鼠标悬停时滚动条背景色LCDTrack-->
+		<ScrollbarLCDTrack Value="#778899" />
+		<ScrollbarMixerShowOnScrollHandle Value="#00000066" />
+		<DetailViewBackground Value="#373a3f" />
+		<PreferencesTab Value="#f0ad42" />
+		<SelectionFrame Value="#f0ad42" />
+		<ControlBackground Value="#303236" />
+		<ControlFillHandle Value="#343e61" />
+		<!--主题色-->
+		<ChosenDefault Value="#75bd93" />
+		<!--录音色-->
+		<ChosenRecord Value="#de564f" />
+		<!--主题色2-->
+		<ChosenPreListen Value="#798cd2" />
+		<ImplicitArm Value="#de5b5464" />
+		<!--主题色2-->
+		<RangeDefault Value="#798cd2" />
+		<RangeDisabled Value="#2f3137" />
+		<RangeDisabledOff Value="#909398" />
+		<!--主题色2-->
+		<LearnMidi Value="#798cd2" />
+		<LearnKey Value="#de564f" />
+		<LearnMacro Value="#75bd93" />
+		<!--主题色2-->
+		<RangeEditField Value="#798cd2" />
+		<!--主题色2-->
+		<RangeEditField2 Value="#798cd2" />
+		<BipolReset Value="#212326" />
+		<ChosenAlternative Value="#de564f" />
+		<ChosenAlert Value="#de564f" />
+		<ChosenPlay Value="#75bd93" />
+		<!--Clip相关，可以不动-->
+		<Clip1 Value="#8b7936" />
+		<Clip2 Value="#999565" />
+		<Clip3 Value="#b8ce93" />
+		<Clip4 Value="#afb95b" />
+		<Clip5 Value="#52ba46" />
+		<Clip6 Value="#81d24c" />
+		<Clip7 Value="#6baace" />
+		<Clip8 Value="#4881aa" />
+		<Clip9 Value="#954eb2" />
+		<Clip10 Value="#ff5f80" />
+		<Clip11 Value="#dc4848" />
+		<Clip12 Value="#d66b18" />
+		<Clip13 Value="#e0aa2a" />
+		<Clip14 Value="#ffec75" />
+		<Clip15 Value="#e7e6e6" />
+		<Clip16 Value="#a0a0a0" />
+		<ClipText Value="#000000" />
+		<ClipBorder Value="#ffffff" />
+		<!--Clip End-->
+		<SceneContrast Value="#2a2a2a" />
+		<!--主题色2-->
+		<SelectionBackground Value="#798cd2" />
+		<StandbySelectionBackground Value="#708090" />
+		<SelectionForeground Value="#ffffff" />
+		<StandbySelectionForeground Value="#ffffff" />
+		<SelectionBackgroundContrast Value="#7a959e" />
+		<SurfaceBackground Value="#373a3f" />
+		<TakeLaneTrackHighlighted Value="#3e3e3e" />
+		<TakeLaneTrackNotHighlighted Value="#303030" />
+		<AutomationColor Value="#70c292" />
+		<AutomationGrid Value="#212326" />
+		<!--主题色2-->
+		<LoopColor Value="#798cd2" />
+		<OffGridLoopColor Value="#5256604f" />
+		<ArrangementRulerMarkings Value="#909398" />
+		<DetailViewRulerMarkings Value="#909398" />
+		<ShadowDark Value="#00000054" />
+		<ShadowLight Value="#212326cc" />
+		<DisplayBackground Value="#212326" />
+		<AbletonColor Value="#f08f42" />
+		<WaveformColor Value="#17191cef" />
+		<DimmedWaveformColor Value="#696969df" />
+		<VelocityColor Value="#6bc791" />
+		<VelocitySelectedOrHovered Value="#5b8cff" />
+		<NoteProbability Value="#636363" />
+		<Alert Value="#de564f" />
+		<ControlOnForeground Value="#212326" />
+		<ControlOffForeground Value="#d9def2" />
+		<ControlOnDisabledForeground Value="#bbbcbf" />
+		<ControlOffDisabledForeground Value="#909398" />
+		<ControlOnAlternativeForeground Value="#212326" />
+		<ControlTextBack Value="#2f3137" />
+		<ControlContrastFrame Value="#212326" />
+		<ControlSelectionFrame Value="#f0ad42" />
+		<ControlContrastTransport Value="#2f3137" />
+		<!--主题色-->
+		<ViewControlOn Value="#75bb93" />
+		<ViewControlOff Value="#464646" />
+		<!--主题色-->
+		<Progress Value="#75bb93" />
+		<ProgressText Value="#ffffff" />
+		<!--主题色-->
+		<TransportProgress Value="#75bb93" />
+		<ClipSlotButton Value="#212326" />
+		<BrowserBar Value="#2f3137" />
+		<BrowserBarOverlayHintTextColor Value="#909398" />
+		<BrowserDisabledItem Value="#909398" />
+		<BrowserSampleWaveform Value="#909398" />
+		<AutomationDisabled Value="#de564f" />
+		<AutomationMouseOver Value="#ffffff" />
+		<MidiNoteMaxVelocity Value="#f0ad42" />
+		<RetroDisplayBackground Value="#212326" />
+		<RetroDisplayBackgroundLine Value="#373a3f" />
+		<!--主题色2-->
+		<RetroDisplayForeground Value="#798cd2" />
+		<RetroDisplayForeground2 Value="#75bd93" />
+		<RetroDisplayForegroundDisabled Value="#6e7277" />
+		<RetroDisplayGreen Value="#f0ad42" />
+		<RetroDisplayRed Value="#75bd93" />
+		<!--主题色2-->
+		<RetroDisplayHandle1 Value="#798cd2" />
+		<!--主题色2-->
+		<RetroDisplayHandle2 Value="#798cd2" />
+		<RetroDisplayScaleText Value="#bbbcbf" />
+		<!--新增词条-->
+		<RetroDisplayTitle Value="#b5b5b5" />
+		<ThresholdLineColor Value="#de564f" />
+		<GainReductionLineColor Value="#f0ad42" />
+		<InputCurveColor Value="#d9def2" />
+		<InputCurveOutlineColor Value="#de564f00" />
+		<OutputCurveColor Value="#d9def24c" />
+		<OutputCurveOutlineColor Value="#ffffff" />
+		<!--频谱颜色-->
+		<SpectrumDefaultColor Value="#dadff1" />
+		<SpectrumAlternativeColor Value="#75bd93" />
+		<!--EQ等频谱分割线颜色-->
+		<SpectrumGridLines Value="#dadff14f" />
+		<Operator1 Value="#f0ad42" />
+		<Operator2 Value="#75bd93" />
+		<!--主题色2-->
+		<Operator3 Value="#798cd2" />
+		<Operator4 Value="#de564f" />
+		<DrumRackScroller1 Value="#2f3137" />
+		<DrumRackScroller2 Value="#2f3237" />
+		<FilledDrumRackPad Value="#515661" />
+		<SurfaceAreaFocus Value="#26282c" />
+		<!--主题色2-->
+		<FreezeColor Value="#798cd2" />
+		<GridLabel Value="#2123267f" />
+		<GridLineBase Value="#26282c54" />
+		<ArrangerGridTiles Value="#50576219" />
+		<DetailGridTiles Value="#50576219" />
+		<GridGuideline Value="#f0ad42" />
+		<OffGridGuideline Value="#2123264f" />
+		<TreeColumnHeadBackground Value="#40434a" />
+		<TreeColumnHeadForeground Value="#bbbcbf" />
+		<TreeColumnHeadSelected Value="#40434a" />
+		<TreeColumnHeadFocus Value="#2f3137" />
+		<TreeColumnHeadControl Value="#212326" />
+		<!--主题色2-->
+		<TreeRowCategoryForeground Value="#798cd2" />
+		<TreeRowCategoryBackground Value="#00000000" />
+		<BrowserTagBackground Value="#2f3137" />
+		<SearchIndication Value="#de564f" />
+		<KeyZoneBackground Value="#badec9" />
+		<KeyZoneCrossfadeRamp Value="#75bd93" />
+		<VelocityZoneBackground Value="#efada9" />
+		<VelocityZoneCrossfadeRamp Value="#de564f" />
+		<SelectorZoneBackground Value="#b3bee6" />
+		<!--主题色2-->
+		<SelectorZoneCrossfadeRamp Value="#798cd2" />
+		<ViewCheckControlEnabledOff Value="#de564f" />
+		<ViewCheckControlDisabledOn Value="#bbbcbf" />
+		<ViewCheckControlDisabledOff Value="#2f3137" />
+		<DefaultBlendFactor Value="0.7570000291" />
+		<IconBlendFactor Value="0.7300000191" />
+		<ClipBlendFactor Value="0.7580000162" />
+		<NoteBorderStandbyBlendFactor Value="0.5360000134" />
+		<RetroDisplayBlendFactor Value="1" />
+		<CheckControlNotCheckedBlendFactor Value="0.5" />
+		<MixSurfaceAreaBlendFactor Value="0.375" />
+		<TextFrameSegmentBlendFactor Value="0.3950000107" />
+		<NoteDisabledSelectedBlendFactor Value="0.5" />
+		<BackgroundClip Value="#2f3137" />
+		<BackgroundClipFrame Value="#212326" />
+		<WarperTimeBarRulerBackground Value="#26282c" />
+		<WarperTimeBarMarkerBackground Value="#2f3137" />
+		<MinVelocityNoteBlendFactor Value="0.2639999986" />
+		<StripedBackgroundShadeFactor Value="0.8999999762" />
+		<NonEditableAutomationAlpha Value="127" />
+		<DisabledContextMenuIconAlpha Value="85" />
+		<ClipBorderAlpha Value="120" />
+		<ScrollBarAlpha Value="255" />
+		<ScrollBarOnHoverAlpha Value="255" />
+		<ScrollBarBackgroundAlpha Value="255" />
+		<InaudibleTakeLightness Value="0.322000000000000008" />
+		<InaudibleTakeSaturation Value="0.775000000000000022" />
+		<InaudibleTakeNameLightness Value="0.800000000000000044" />
+		<InaudibleTakeNameSaturation Value="0.853999999999999981" />
+		<AutomationLaneClipBodyLightness Value="0.260000000000000009" />
+		<AutomationLaneClipBodySaturation Value="0.80600000000000005" />
+		<AutomationLaneHeaderLightness Value="0.251000000000000001" />
+		<AutomationLaneHeaderSaturation Value="0.53400000000000003" />
+		<TakeLaneHeaderLightness Value="0.479999999999999982" />
+		<TakeLaneHeaderSaturation Value="0.900000000000000022" />
+		<TakeLaneHeaderNameLightness Value="0.849999999999999978" />
+		<TakeLaneHeaderNameSaturation Value="0.900000000000000022" />
+		<AutomationLaneHeaderNameLightness Value="0.708999999999999964" />
+		<AutomationLaneHeaderNameSaturation Value="0.900000000000000022" />
+		<ClipContrastColorAdjustment Value="24" />
+		<SessionSlotOklabLCompensationFactor Value="20" />
+		<BipolarPotiTriangle Value="#212326" />
+		<Poti Value="#212326" />
+		<DeactivatedPoti Value="#2f3137" />
+		<PotiNeedle Value="#212326" />
+		<DeactivatedPotiNeedle Value="#2f3137" />
+		<!--钢琴窗琴键颜色-->
+		<PianoBlackKey Value="#26282c" />
+		<PianoWhiteKey Value="#e0e2e5" />
+		<PianoKeySeparator Value="#26282c" />
+		<!--顶栏修改：分别是，背景，选中，前景（字体颜色）与选中-->
+		<TransportOffBackground Value="#373a3f" />
+		<TransportOffDisabledForeground Value="#798cd2" />
+		<TransportOffForeground Value="#f0f1f2" />
+		<TransportSelectionBackground Value="#798cd2" />
+		<!--调制-->
+		<Modulation Value="#6dd7ff" />
+		<ModulationDisabled Value="#c8c8c8a9" />
+		<ModulationMouseOver Value="#4aa1ff" />
+		<AutomationTransformToolFrame Value="#0000003f" />
+		<AutomationTransformToolFrameActive Value="#000000" />
+		<AutomationTransformToolHandle Value="#0000003f" />
+		<AutomationTransformToolHandleActive Value="#000000" />
+		<MutedAuditionClip Value="#636568" />
+		<LinkedTrackHover Value="#b3d4e5" />
+		<ExpressionLaneHeaderHighlight Value="#2f3137" />
+		<DeactivatedClipHeader Value="#696f73df" />
+		<DeactivatedClipHeaderForeground Value="#212326" />
+		<!--顶端按钮：调性-->
+		<ScaleAwareness Value="#7370db" />
+		<StandardVuMeter>
+			<OnlyMinimumToMaximum Value="false" />
+			<!--电平，最高色，到下一次注释前，都应该为HEX相同的红色-->
+			<Maximum Value="#de564f" />
+			<AboveZeroDecibel Value="#de564f" />
+			<ZeroDecibel Value="#de564f" />
+			<!--电平，黄色-->
+			<BelowZeroDecibel1 Value="#ffa07a" />
+			<!--电平，绿-->
+			<BelowZeroDecibel2 Value="#66cdaa" />
+			<Minimum Value="#66cdaa" />
+		</StandardVuMeter>
+		<OverloadVuMeter>
+			<!--爆红时值，修改Max和Min的值达到渐变效果即可-->
+			<OnlyMinimumToMaximum Value="true" />
+			<Maximum Value="#de564f" />
+			<AboveZeroDecibel Value="#ffffff" />
+			<ZeroDecibel Value="#ffffff" />
+			<BelowZeroDecibel1 Value="#ffffff" />
+			<BelowZeroDecibel2 Value="#ffffff" />
+			<Minimum Value="#be564f" />
+		</OverloadVuMeter>
+		<DisabledVuMeter>
+			<OnlyMinimumToMaximum Value="false" />
+			<Maximum Value="#de564f" />
+			<AboveZeroDecibel Value="#ffa07a" />
+			<ZeroDecibel Value="#828385" />
+			<BelowZeroDecibel1 Value="#7e7f81" />
+			<BelowZeroDecibel2 Value="#7b7c7e" />
+			<Minimum Value="#6e6f71" />
+		</DisabledVuMeter>
+		<HeadphonesVuMeter>
+			<OnlyMinimumToMaximum Value="false" />
+			<Maximum Value="#a5a5f1" />
+			<AboveZeroDecibel Value="#90aaec" />
+			<ZeroDecibel Value="#90aaec" />
+			<BelowZeroDecibel1 Value="#85b8f1" />
+			<BelowZeroDecibel2 Value="#7cc6f5" />
+			<Minimum Value="#0affff" />
+		</HeadphonesVuMeter>
+		<SendsOnlyVuMeter>
+			<OnlyMinimumToMaximum Value="false" />
+			<Maximum Value="#c8c800" />
+			<AboveZeroDecibel Value="#c8c800" />
+			<ZeroDecibel Value="#6464ff" />
+			<BelowZeroDecibel1 Value="#6464ff" />
+			<BelowZeroDecibel2 Value="#6464ff" />
+			<Minimum Value="#6464ff" />
+		</SendsOnlyVuMeter>
+		<BipolarGainReductionVuMeter>
+			<OnlyMinimumToMaximum Value="false" />
+			<Maximum Value="#5577c6" />
+			<AboveZeroDecibel Value="#5577c6" />
+			<ZeroDecibel Value="#f0ad42" />
+			<BelowZeroDecibel1 Value="#f0ad42" />
+			<BelowZeroDecibel2 Value="#f0ad42" />
+			<Minimum Value="#f0ad42" />
+		</BipolarGainReductionVuMeter>
+		<OrangeVuMeter>
+			<OnlyMinimumToMaximum Value="true" />
+			<Maximum Value="#f0ad42" />
+			<AboveZeroDecibel Value="#f0ad42" />
+			<ZeroDecibel Value="#f0ad42" />
+			<BelowZeroDecibel1 Value="#f0ad42" />
+			<BelowZeroDecibel2 Value="#f0ad42" />
+			<Minimum Value="#f0ad42" />
+		</OrangeVuMeter>
+		<MainViewFocusIndicator Value="#2f3137" />
+		<MidiEditorBlackKeyBackground Value="#07070726" />
+		<MidiEditorBackgroundWhiteKeySeparator Value="#0a0e1119" />
+		<!--rangeedit作用不明-->
+		<RangeEditField3 Value="#ffa07a" />
+		<ScrollbarInnerHandleHover Value="#757780" />
+		<ScrollbarInnerTrackHover Value="#212326" />
+		<ScrollbarLCDHandleHover Value="#757780" />
+		<ScrollbarLCDTrackHover Value="#373a3f" />
+		<ScrollbarMixerShowOnScrollHandleHover Value="#0000007f" />
+		<!--finally done!-->
+		<!--Production by AritxOnly-->
+	</Theme>
+</Ableton>

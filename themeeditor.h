@@ -19,8 +19,6 @@ public:
     ThemeEditor(QWidget *parent = nullptr);
     ~ThemeEditor();
 
-    void InitAskListView();
-
     void ThemeListDoubleClicked(const QModelIndex &index);
     void ImportExportClicked();
     void ImportExportAltered();
@@ -29,8 +27,9 @@ public:
     void HelpButtonClicked();
     void ThemeModified();
 
+    Ui::ThemeEditor *ui;    // ui指针执为public方便editorui类引用修改
+
 private:
-    Ui::ThemeEditor *ui;
     FileHandler fileHandler;
     ThemeData themeData;
 

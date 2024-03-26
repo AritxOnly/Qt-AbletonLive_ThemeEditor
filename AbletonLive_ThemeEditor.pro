@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     clickpositionfilter.cpp \
+    editorui.cpp \
     filehandler.cpp \
     main.cpp \
     themedata.cpp \
@@ -17,6 +18,7 @@ SOURCES += \
 
 HEADERS += \
     clickpositionfilter.h \
+    editorui.h \
     filehandler.h \
     qheaders.h \
     themedata.h \

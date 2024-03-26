@@ -1,6 +1,7 @@
 #include "themeeditor.h"
 #include "ui_themeeditor.h"
 #include "clickpositionfilter.h"
+#include "editorui.h"
 
 
 ThemeEditor::ThemeEditor(QWidget *parent)
@@ -84,7 +85,7 @@ void ThemeEditor::ThemeListDoubleClicked(const QModelIndex &index)
     currentTheme = themeItemModel->data(index).toString();
     themeData.LoadData((fileHandler.folderPath+currentTheme+".ask").toUtf8());
     ui->currentTheme->setText(currentTheme);
-    InitAskListView();
+    EditorUI *editor = new EditorUI(this, &themeData);
 }
 
 void ThemeEditor::ImportExportClicked()
@@ -210,21 +211,4 @@ void ThemeEditor::HelpButtonClicked()
 void ThemeEditor::ThemeModified()
 {
     ui->currentTheme->setText(currentTheme+"(modified)");
-}
-void ThemeEditor::InitAskListView()
-{
-    ui->askColorList->
-        setStyleSheet("padding: 5px; background-color:#2a2a2a; font-size:15px; color:#c0c0c3;");
-
-    for(const auto& value : themeData)
-    {
-        QListWidgetItem *item = new QListWidgetItem;
-
-        //设置子项相关信息
-        item->setSizeHint(QSize(ui->askColorList->width(),50));
-        item->setText(value.name);
-        qDebug() << value.name;
-
-        ui->askColorList->addItem(item);
-    }
 }
