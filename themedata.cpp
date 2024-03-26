@@ -1,128 +1,163 @@
 #include "themedata.h"
 
-
-
-
-void ThemeData::Tag::ReadTag(QByteArray::iterator bg, QByteArray::iterator ed)
+// 读取标签数据
+void ThemeData::Tag::ReadTag(QByteArray::iterator begin, QByteArray::iterator end)
 {
-    if(*(ed-1)=='/')
+    if (*(end - 1) == '/')
     {
-        ed = bg;
-        while(*(++ed)!=' ');
-        name.resize(ed-bg);
-        std::copy(bg,ed,name.begin());
+        // 处理自闭合标签
+        end = begin;
+        while (*(++end) != ' ');
+        // 提取标签名
+        name.assign(begin, end);
 
-        while(*(bg++)!='"');
-        ed=bg;
-        while(*(++ed)!='"');
+        // 定位到 Value 属性的值
+        while (*(begin++) != '"');
+        QByteArray::iterator valueBegin = begin;
+        while (*(++end) != '"');
 
-        QString str;str.resize(ed-bg);
-        std::copy(bg,ed,str.begin());
+        // 提取属性值
+        QString value;
+        value.assign(valueBegin, end);
 
-        if(str[0]=='#')
+        // 根据属性值类型进行赋值
+        if (value[0] == '#')
         {
-            if(str.length()==7)type = rgb;
-            else type = rgba;
-            i = str.sliced(1).toUInt(nullptr,16);
+            if (value.length() == 7)
+                type = rgb;
+            else
+                type = rgba;
+            i = value.mid(1).toUInt(nullptr, 16);
         }
-        else if(str.contains('e'))
+        else if (value.contains('e'))
         {
             type = bol;
-            if(str[0]=='t')i=1;
-            else i=0;
+            i = (value[0] == 't') ? 1 : 0;
         }
-        else if(str.contains('.'))
+        else if (value.contains('.'))
         {
             type = flt;
-            f = str.toFloat();
+            f = value.toFloat();
         }
         else
         {
             type = itg;
-            i = str.toUInt();
+            i = value.toUInt();
         }
     }
     else
     {
-        if(*bg=='/')type = end, ++bg;
-        else type = beg;
-        name.resize(ed-bg);
-        std::copy(bg,ed,name.begin());
+        // 处理起始和结束标签
+        type = (*begin == '/') ? end : beg;
+        // 提取标签名
+        name.assign(begin + (type == end ? 1 : 0), end);
     }
 }
-void ThemeData::Tag::WriteTag(QByteArray& dat)
+
+// 写入标签数据
+void ThemeData::Tag::WriteTag(QByteArray& data)
 {
-    if(type==beg||type==end)
+    if (type == beg || type == end)
     {
-        if(type==end)dat.push_back('/');
-        dat+=name.toUtf8();
+        data.push_back((type == end) ? '/' : '>');
+        data += name.toUtf8();
         return;
     }
-    dat+=(name + " Value=\"").toUtf8();
-    switch(type)
+
+    // 添加标签名和 Value 属性
+    data += (name + " Value=\"").toUtf8();
+
+    // 根据属性类型添加值
+    switch (type)
     {
     case rgb:
-        dat+=("#"+QString("%1").arg(i, 6, 16, QChar('0'))).toUtf8();
+        data += ("#" + QString("%1").arg(i, 6, 16, QChar('0'))).toUtf8();
         break;
     case rgba:
-        dat+=("#"+QString("%1").arg(i, 8, 16, QChar('0'))).toUtf8();
+        data += ("#" + QString("%1").arg(i, 8, 16, QChar('0'))).toUtf8();
         break;
     case itg:
-        dat += QString::number(i,10).toUtf8();
+        data += QString::number(i, 10).toUtf8();
         break;
     case bol:
-        if(i)dat += "true";
-        else dat += "false";
+        data += (i ? "true" : "false");
         break;
     case flt:
-        dat += QString::number(f).toUtf8();
+        data += QString::number(f).toUtf8();
         break;
     }
-    dat+="\" /";
+    data += "\" /";
 }
 
-ThemeData::ThemeData()
-{
-
-}
-
+// 加载主题数据
 bool ThemeData::LoadData(const QByteArray& fileName)
 {
     QFile file(fileName);
-    if(!file.exists())return false;
-    if(!file.open(QIODevice::ReadOnly|QIODevice::Text))return false;
-    auto dat = file.readAll();
+    if (!file.exists() || !file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
+
+    // 读取文件内容
+    QByteArray data = file.readAll();
     file.close();
 
-    auto bg = dat.begin(),ded = dat.end();
-    while(*(bg++)!='\n');
-    while(true)
+    // 解析数据
+    QByteArray::iterator iter = std::find(data.begin(), data.end(), '\n');
+    while (++iter != data.end())
     {
-        while(*(bg++)!='<')if(bg==ded)return true;
-        auto ed=bg;
-        while(*(++ed)!='>');
+        iter = std::find(iter, data.end(), '<');
+        if (iter == data.end())
+            break;
+        QByteArray::iterator tagEnd = std::find(iter, data.end(), '>');
+        if (tagEnd == data.end())
+            break;
+
+        // 创建标签并读取数据
         v.push_back({});
-        v.back().ReadTag(bg,ed);
+        v.back().ReadTag(iter + 1, tagEnd);
     }
+
+    return true;
 }
+
+// 保存主题数据
 bool ThemeData::SaveData(const QByteArray& fileName)
 {
     QFile file(fileName);
-    if(!file.open(QIODevice::WriteOnly|QIODevice::Text))return false;
-    QByteArray dat = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
-    int tabs = 0;
-    for(auto& tag:v)
-    {
-        if(tag.type==Tag::end)--tabs;
-        for(int i=0;i<tabs;++i)dat.push_back('\t');
-        dat.push_back('<');
-        tag.WriteTag(dat);
-        dat.push_back('>');
-        dat.push_back('\n');
-        if(tag.type==Tag::beg)++tabs;
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
+        return false;
 
+    // 写入 XML 头部
+    QByteArray data = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n";
+    int tabs = 0;
+
+    // 遍历标签数据并写入文件
+    for (auto& tag : v)
+    {
+        if (tag.type == Tag::end)
+            --tabs;
+
+        // 添加缩进
+        for (int i = 0; i < tabs; ++i)
+            data.push_back('\t');
+
+        // 写入标签内容
+        data.push_back('<');
+        tag.WriteTag(data);
+        data.push_back('>');
+        data.push_back('\n');
+
+        if (tag.type == Tag::beg)
+            ++tabs;
     }
-    file.write(QByteArray(dat));
+
+    // 写入文件
+    file.write(data);
     file.close();
     return true;
+}
+
+// 构造函数
+ThemeData::ThemeData()
+{
+    // 初始化函数体为空
 }
