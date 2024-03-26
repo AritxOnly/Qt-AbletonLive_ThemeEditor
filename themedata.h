@@ -25,7 +25,7 @@ public:
         };
 
 
-        void ReadTag(QByteArray::iterator bg, QByteArray::iterator ed);
+        void ReadTag(QByteArray::iterator iBegin, QByteArray::iterator iEnd);
         void WriteTag(QByteArray& dat);
     };
 

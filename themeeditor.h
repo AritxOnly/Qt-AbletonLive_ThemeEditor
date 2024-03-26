@@ -19,6 +19,7 @@ public:
     ThemeEditor(QWidget *parent = nullptr);
     ~ThemeEditor();
 
+    void InitAskListView();
 
     void ThemeListDoubleClicked(const QModelIndex &index);
     void ImportExportClicked();

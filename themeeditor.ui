@@ -520,7 +520,13 @@ font-size:15px;</string>
          </layout>
         </item>
         <item>
-         <widget class="QWidget" name="demoArea" native="true"/>
+         <widget class="QWidget" name="demoArea" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QListWidget" name="askColorList"/>
+           </item>
+          </layout>
+         </widget>
         </item>
        </layout>
       </item>
