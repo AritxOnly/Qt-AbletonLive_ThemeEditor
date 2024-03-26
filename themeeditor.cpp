@@ -1,29 +1,6 @@
 #include "themeeditor.h"
 #include "ui_themeeditor.h"
-
-class ClickPositionFilter : public QObject {
-public:
-    explicit ClickPositionFilter(QToolButton *button) : QObject(button), button(button) {}
-
-protected:
-    bool eventFilter(QObject *obj, QEvent *event) override {
-        if (obj == button) {
-            if (event->type() == QEvent::MouseButtonPress) {
-                QMouseEvent *mouseEvent = reinterpret_cast<QMouseEvent*>(event);
-                if (mouseEvent->button() == Qt::LeftButton) {
-                    if (!button->menu() || mouseEvent->pos().x() < button->width() - 20) {
-                        button->clicked();
-                        return true;
-                    }
-                }
-            }
-        }
-        return QObject::eventFilter(obj, event);
-    }
-
-private:
-    QToolButton *button;
-};
+#include "clickpositionfilter.h"
 
 
 ThemeEditor::ThemeEditor(QWidget *parent)
@@ -38,17 +15,25 @@ ThemeEditor::ThemeEditor(QWidget *parent)
     ui->themeList->setModel(themeItemModel);
 
     themeItemModel->clear();
-    for(auto str:fileHandler.fileList)themeItemModel->appendRow(new QStandardItem(str.remove(".ask")));
+    for(auto str:fileHandler.fileList)
+        themeItemModel->appendRow(new QStandardItem(str.remove(".ask")));
 
 
-    connect(ui->themeList, &QListView::doubleClicked, this, &ThemeEditor::ThemeListDoubleClicked);
-
-
+    connect(ui->themeList,
+            &QListView::doubleClicked,
+            this,
+            &ThemeEditor::ThemeListDoubleClicked);
 
     ui->importExport->setText("Import");
     QMenu* importExportMenu = new QMenu();
-    connect(importExportMenu->addAction("Export"),&QAction::triggered,this,&ThemeEditor::ImportExportAltered);
-    connect(ui->importExport,&QToolButton::clicked,this,&ThemeEditor::ImportExportClicked);
+    connect(importExportMenu->addAction("Export"),
+            &QAction::triggered,
+            this,
+            &ThemeEditor::ImportExportAltered);
+    connect(ui->importExport,
+            &QToolButton::clicked,
+            this,
+            &ThemeEditor::ImportExportClicked);
     importExportMenu->setStyleSheet("padding: 5px; background-color:#2a2a2a; font-size:15px; color:#c0c0c3;");
     importExportMenu->setFixedWidth(100);
     ui->importExport->setMenu(importExportMenu);
@@ -57,8 +42,14 @@ ThemeEditor::ThemeEditor(QWidget *parent)
 
     ui->saveSaveAs->setText("Save");
     QMenu* saveSaveAsMenu = new QMenu();
-    connect(saveSaveAsMenu->addAction("SaveAs..."),&QAction::triggered,this,&ThemeEditor::SaveSaveAsAltered);
-    connect(ui->saveSaveAs,&QToolButton::clicked,this,&ThemeEditor::SaveSaveAsClicked);
+    connect(saveSaveAsMenu->addAction("SaveAs..."),
+            &QAction::triggered,
+            this,
+            &ThemeEditor::SaveSaveAsAltered);
+    connect(ui->saveSaveAs,
+            &QToolButton::clicked,
+            this,
+            &ThemeEditor::SaveSaveAsClicked);
     saveSaveAsMenu->setStyleSheet("padding: 5px; background-color:#2a2a2a; font-size:15px; color:#c0c0c3;");
     saveSaveAsMenu->setFixedWidth(100);
     ui->saveSaveAs->setMenu(saveSaveAsMenu);
@@ -68,6 +59,8 @@ ThemeEditor::ThemeEditor(QWidget *parent)
     //
     //关于和帮助
     connect(ui->helpButton, &QPushButton::clicked, this, &ThemeEditor::HelpButtonClicked);
+
+    themeData.BindOnModified(this,&ThemeEditor::ThemeModified);
 
     //取色器用法QColor Dialog，将QColor的RGB转化为HEX(Debug测试信号链接)
 //    connect(ui->actionDebug_Output, &QAction::triggered, this, [=]() {
@@ -89,15 +82,16 @@ ThemeEditor::~ThemeEditor()
 void ThemeEditor::ThemeListDoubleClicked(const QModelIndex &index)
 {
     currentTheme = themeItemModel->data(index).toString();
-    themeData.LoadData((fileHandler.folderPath+currentTheme).toUtf8());
+    themeData.LoadData((fileHandler.folderPath+currentTheme+".ask").toUtf8());
     ui->currentTheme->setText(currentTheme);
+    InitAskListView();
 }
 
 void ThemeEditor::ImportExportClicked()
 {
     if(ui->importExport->text()=="Import")
     {
-        auto path = QFileDialog::getOpenFileName(this,"Import Theme File","","*.ask");
+        auto path = QFileDialog::getOpenFileName(this, "Import Theme File", "", "*.ask");
         auto name = path.sliced(path.lastIndexOf('/')+1);
         QFile src(path);
         QFile dst(fileHandler.folderPath+name);
@@ -106,8 +100,8 @@ void ThemeEditor::ImportExportClicked()
         dst.write(src.readAll());
         fileHandler.ListThemeFolder();
         themeItemModel->clear();
-        for(auto str:fileHandler.fileList)themeItemModel->appendRow(new QStandardItem(str.remove(".ask")));
-
+        for(auto str:fileHandler.fileList)
+            themeItemModel->appendRow(new QStandardItem(str.remove(".ask")));
     }
     else
     {
@@ -119,7 +113,9 @@ void ThemeEditor::ImportExportClicked()
             msg.exec();
             return;
         }
-        auto path = QFileDialog::getSaveFileName(this,"Export Theme File",currentTheme+".ask","*.ask");
+        auto path = QFileDialog::getSaveFileName(this,
+                                                 "Export Theme File",
+                                                 currentTheme+".ask","*.ask");
         QFile src(fileHandler.folderPath+currentTheme+".ask");
         QFile dst(path);
         if (!src.open(QIODevice::ReadOnly))return;
@@ -159,12 +155,11 @@ void ThemeEditor::SaveSaveAsClicked()
     }
     else
     {
-        auto path = QFileDialog::getSaveFileName(this,"Save Theme File As...",currentTheme+".ask","*.ask");
-        QFile src(fileHandler.folderPath+currentTheme+".ask");
-        QFile dst(path);
-        if (!src.open(QIODevice::ReadOnly))return;
-        if (!dst.open(QIODevice::WriteOnly))return;
-        dst.write(src.readAll());
+        auto path = QFileDialog::getSaveFileName(this,
+                                                 "Save Theme File As...",
+                                                 currentTheme+".ask",
+                                                 "*.ask");
+        themeData.SaveData(path);
     }
 }
 
@@ -210,4 +205,26 @@ void ThemeEditor::HelpButtonClicked()
 
     msgBoxHelp.setWindowModality(Qt::NonModal);
     msgBoxHelp.exec();
+}
+
+void ThemeEditor::ThemeModified()
+{
+    ui->currentTheme->setText(currentTheme+"(modified)");
+}
+void ThemeEditor::InitAskListView()
+{
+    ui->askColorList->
+        setStyleSheet("padding: 5px; background-color:#2a2a2a; font-size:15px; color:#c0c0c3;");
+
+    for(const auto& value : themeData)
+    {
+        QListWidgetItem *item = new QListWidgetItem;
+
+        //设置子项相关信息
+        item->setSizeHint(QSize(ui->askColorList->width(),50));
+        item->setText(value.name);
+        qDebug() << value.name;
+
+        ui->askColorList->addItem(item);
+    }
 }

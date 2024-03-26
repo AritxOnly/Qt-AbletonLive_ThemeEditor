@@ -9,12 +9,14 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    clickpositionfilter.cpp \
     filehandler.cpp \
     main.cpp \
     themedata.cpp \
     themeeditor.cpp
 
 HEADERS += \
+    clickpositionfilter.h \
     filehandler.h \
     qheaders.h \
     themedata.h \
@@ -22,6 +24,9 @@ HEADERS += \
 
 FORMS += \
     themeeditor.ui
+
+QMAKE_CXXFLAGS += -w
+QMAKE_CFLAGS += -w
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -19,14 +19,15 @@ public:
     ThemeEditor(QWidget *parent = nullptr);
     ~ThemeEditor();
 
+    void InitAskListView();
 
     void ThemeListDoubleClicked(const QModelIndex &index);
     void ImportExportClicked();
     void ImportExportAltered();
     void SaveSaveAsClicked();
     void SaveSaveAsAltered();
-
     void HelpButtonClicked();
+    void ThemeModified();
 
 private:
     Ui::ThemeEditor *ui;
