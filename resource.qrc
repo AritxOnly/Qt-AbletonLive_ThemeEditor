@@ -1,5 +1,11 @@
 <RCC>
-    <qresource prefix="/ico">
-        <file>resource/logo.ico</file>
+    <qresource prefix="/icons">
+        <file>resources/icons/logo.ico</file>
+    </qresource>
+    <qresource prefix="/fonts">
+        <file>resources/fonts/AbletonSansSmall-Regular.ttf</file>
+    </qresource>
+    <qresource prefix="/pics">
+        <file>resources/pics/help-filling.png</file>
     </qresource>
 </RCC>

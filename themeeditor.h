@@ -19,7 +19,14 @@ public:
     ThemeEditor(QWidget *parent = nullptr);
     ~ThemeEditor();
 
+
     void ThemeListDoubleClicked(const QModelIndex &index);
+    void ImportExportClicked();
+    void ImportExportAltered();
+    void SaveSaveAsClicked();
+    void SaveSaveAsAltered();
+
+    void HelpButtonClicked();
 
 private:
     Ui::ThemeEditor *ui;
@@ -27,5 +34,6 @@ private:
     ThemeData themeData;
 
     QStandardItemModel* themeItemModel;
+    QString currentTheme;
 };
 #endif // THEMEEDITOR_H

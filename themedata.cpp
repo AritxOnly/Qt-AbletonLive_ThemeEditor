@@ -1,8 +1,6 @@
 #include "themedata.h"
 
 
-
-
 void ThemeData::Tag::ReadTag(QByteArray::iterator bg, QByteArray::iterator ed)
 {
     if(*(ed-1)=='/')
@@ -86,7 +84,7 @@ ThemeData::ThemeData()
 
 }
 
-bool ThemeData::LoadData(const QByteArray& fileName)
+bool ThemeData::LoadData(const QString& fileName)
 {
     QFile file(fileName);
     if(!file.exists())return false;
@@ -94,6 +92,7 @@ bool ThemeData::LoadData(const QByteArray& fileName)
     auto dat = file.readAll();
     file.close();
     v.clear();
+    modified=false;
     auto bg = dat.begin(),ded = dat.end();
     while(*(bg++)!='\n');
     while(true)
@@ -105,7 +104,7 @@ bool ThemeData::LoadData(const QByteArray& fileName)
         v.back().ReadTag(bg,ed);
     }
 }
-bool ThemeData::SaveData(const QByteArray& fileName)
+bool ThemeData::SaveData(const QString& fileName)
 {
     QFile file(fileName);
     if(!file.open(QIODevice::WriteOnly|QIODevice::Text))return false;

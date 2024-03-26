@@ -31,9 +31,12 @@ public:
 
     QVector<Tag> v;
     ThemeData();
-    bool LoadData(const QByteArray& fileName);
-    bool SaveData(const QByteArray& fileName);
+    bool LoadData(const QString& fileName);
+    bool SaveData(const QString& fileName);
+    bool HasModified();
+private:
 
+    bool modified;
 };
 
 #endif // THEMEDATA_H

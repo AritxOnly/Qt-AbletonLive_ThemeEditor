@@ -1,6 +1,7 @@
 #ifndef QHEADERS_H
 #define QHEADERS_H
 
+#include <QApplication>
 #include <QMainWindow>
 #include <QString>
 #include <QSettings>
@@ -10,5 +11,13 @@
 #include <QFile>
 #include <QPainter>
 #include <Qlabel>
+#include <QDesktopServices>
+#include <QMessageBox>
+#include <QComboBox>
+#include <QPushButton>
+#include <QMenu>
+#include <QFileDialog>
+#include <QFontDatabase>
+#include <QMouseEvent>
 
 #endif // QHEADERS_H

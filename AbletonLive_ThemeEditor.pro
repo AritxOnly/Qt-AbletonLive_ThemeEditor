@@ -33,7 +33,7 @@ RESOURCES += \
 
 # 编译后应用图标设置
 RC_FILE += \
-    resource/logo.rc
+    resources/icons/logo.rc
 
 # 编译后生成exe名称设置
-TARGET = LiveThemeEditor
+TARGET = AbletonLiveThemeEditor
