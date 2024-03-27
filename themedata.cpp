@@ -106,7 +106,7 @@ bool ThemeData::LoadData(const QString& fileName)
     QByteArray dat = file.readAll();
     file.close();
     // 解析数据
-
+    v.clear();
     auto bg = std::find(dat.begin(), dat.end(), '\n');
     while ((bg = std::find(bg, dat.end(), '<')) != dat.end())
     {
