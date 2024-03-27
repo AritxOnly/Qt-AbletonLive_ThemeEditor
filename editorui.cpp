@@ -4,6 +4,8 @@ EditorUI::EditorUI(ThemeEditor *parent, ThemeData *themeData)
 {
     p = parent;
 
+    // SearchBar still WIP
+
     InitAskListView(*themeData);
 
     connect(p->ui->askColorList,
@@ -30,6 +32,14 @@ void EditorUI::InitAskListView(ThemeData themeData)
             item->setText(value.name);
             item->setWhatsThis("#" + QString::number(value.i, 16));
             // qDebug() << value.name << value.i;
+            int hexValue_withoutAlpha = value.i;
+            if(hexValue_withoutAlpha >> 24 != 0)
+                hexValue_withoutAlpha /= 0x100;
+            if(hexValue_withoutAlpha % 0x1000000 <= 0x888888)
+                item->setForeground(Qt::white);
+            else
+                item->setForeground(Qt::black);
+
             item->setBackground(Int2QColorRGBA(value.i));
             item->setData(Qt::UserRole, value.i);    //颜色存储，方便调用
 

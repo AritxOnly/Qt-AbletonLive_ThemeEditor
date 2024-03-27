@@ -523,6 +523,27 @@ font-size:15px;</string>
          <widget class="QWidget" name="demoArea" native="true">
           <layout class="QVBoxLayout" name="verticalLayout_2">
            <item>
+            <widget class="QLineEdit" name="searchBar">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color: rgb(173, 173, 173);
+border-color: rgb(63, 63, 63);
+selection-color: rgb(83, 83, 83);</string>
+             </property>
+             <property name="inputMask">
+              <string/>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="placeholderText">
+              <string>Search here...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
             <widget class="QListWidget" name="askColorList"/>
            </item>
           </layout>

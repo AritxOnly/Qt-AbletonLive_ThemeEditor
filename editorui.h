@@ -25,6 +25,7 @@ public:
 
     QColor Int2QColorRGBA(unsigned int i);
 
+    void SearchBarAction(ThemeData *themeData);
 
 signals:
 };

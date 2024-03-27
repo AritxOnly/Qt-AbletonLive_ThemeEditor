@@ -214,3 +214,16 @@ void ThemeEditor::ThemeModified()
 {
     ui->currentTheme->setText(currentTheme+"(modified)");
 }
+
+// 重载窗口关闭事件
+void ThemeEditor::closeEvent(QCloseEvent *event)
+{
+    QMessageBox::StandardButton close =
+        QMessageBox::question(this,"Quit",
+        "Are you sure to exit the editor?\nPlease make sure you have saved all your works.",
+        QMessageBox::Cancel | QMessageBox::Yes);
+    if(close == QMessageBox::Yes)
+        event->accept();
+    else
+        event->ignore();
+}

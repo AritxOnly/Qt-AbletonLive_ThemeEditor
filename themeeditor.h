@@ -19,6 +19,8 @@ public:
     ThemeEditor(QWidget *parent = nullptr);
     ~ThemeEditor();
 
+    void closeEvent(QCloseEvent *event);    // 重载窗口关闭函数
+
     void ThemeListDoubleClicked(const QModelIndex &index);
     void ImportExportClicked();
     void ImportExportAltered();
