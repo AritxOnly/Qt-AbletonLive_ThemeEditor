@@ -27,8 +27,9 @@ void EditorUI::InitAskListView(ThemeData themeData)
 
             //设置子项相关信息
             item->setSizeHint(QSize(p->ui->askColorList->width(),50));
-            item->setText(value.name + " #" + QString::number(value.i, 16));
-            qDebug() << value.name << value.i;
+            item->setText(value.name);
+            item->setWhatsThis("#" + QString::number(value.i, 16));
+            // qDebug() << value.name << value.i;
             item->setBackground(Int2QColorRGBA(value.i));
             item->setData(Qt::UserRole, value.i);    //颜色存储，方便调用
 
@@ -42,7 +43,7 @@ void EditorUI::InitAskListView(ThemeData themeData)
 QColor EditorUI::Int2QColorRGBA(unsigned int i)
 {
     QString hex = QString::number(i, 16);    //转字符串
-    qDebug() << hex;
+    // qDebug() << hex;
     QColor color2(hex.toUInt(NULL,16));
     return color2;
 }
@@ -75,8 +76,10 @@ void EditorUI::ColorDialog(ThemeData *themeData)
         }
         qDebug() << colorHex << hexValue << QString::number(hexValue, 16);
 
+        item->setBackground(color);
+
         // 对颜色值进行修改
         qDebug() << themeData->
-                          Modify(index, hexValue);  //bug: index out of range
+                          Modify(index, hexValue);
     }
 }

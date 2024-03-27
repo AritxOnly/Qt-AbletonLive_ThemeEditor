@@ -82,6 +82,8 @@ ThemeEditor::~ThemeEditor()
 
 void ThemeEditor::ThemeListDoubleClicked(const QModelIndex &index)
 {
+    ui->askColorList->clear();
+    //bug exists themeData isn't clear
     currentTheme = themeItemModel->data(index).toString();
     themeData.LoadData((fileHandler.folderPath+currentTheme+".ask").toUtf8());
     ui->currentTheme->setText(currentTheme);

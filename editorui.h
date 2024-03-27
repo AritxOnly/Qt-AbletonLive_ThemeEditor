@@ -17,6 +17,7 @@ class EditorUI : public QMainWindow
     Q_OBJECT
 public:
     explicit EditorUI(ThemeEditor *parent = nullptr, ThemeData *themeData = nullptr);
+
     ThemeEditor *p; //parent指针，由构造函数传参传入
 
     void InitAskListView(ThemeData themeData);
