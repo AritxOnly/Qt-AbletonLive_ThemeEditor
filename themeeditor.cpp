@@ -1,4 +1,5 @@
 #include "themeeditor.h"
+#include "settingsinterface.h"
 #include "ui_themeeditor.h"
 #include "clickpositionfilter.h"
 
@@ -9,7 +10,6 @@ ThemeEditor::ThemeEditor(QWidget *parent)
 {
 
     ui->setupUi(this);
-
 
     themeItemModel = new QStandardItemModel(ui->themeList);
     ui->themeList->setModel(themeItemModel);
@@ -62,24 +62,9 @@ ThemeEditor::ThemeEditor(QWidget *parent)
     connect(ui->helpButton, &QPushButton::clicked, this, &ThemeEditor::HelpButtonClicked);
 
     connect(ui->openFolderButton,&QPushButton::clicked, this, &ThemeEditor::OpenFolderButtonClicked);
+    connect(ui->settingsButton,&QPushButton::clicked, this, &ThemeEditor::SettingsButtonClicked);
 
     themeData.BindOnModified(this,&ThemeEditor::ThemeModified);
-
-    //取色器用法QColor Dialog，将QColor的RGB转化为HEX(Debug测试信号链接)
-//    connect(ui->actionDebug_Output, &QAction::triggered, this, [=]() {
-//        QColor color = QColorDialog::getColor(Qt::white,
-//                                              this,
-//                                              "Select the desired color...");
-//        QRgb mRGB = qRgb(color.red(), color.green(), color.blue());
-//        QString colorHex = QString::number(mRGB, 16);
-//        qDebug() << colorHex;
-//    });
-
-//    auto gi = new GraphicalInterface(ui->demoArea);
-//    QVBoxLayout *vl = new QVBoxLayout(ui->demoArea);
-//    vl->addWidget(gi);
-//    ui->demoArea->setLayout(vl);
-
 
 }
 
@@ -93,7 +78,6 @@ void ThemeEditor::ThemeListDoubleClicked(const QModelIndex &index)
     currentTheme = themeItemModel->data(index).toString();
     themeData.LoadData((fileHandler.folderPath+currentTheme+".ask").toUtf8());
     ui->currentTheme->setText(currentTheme);
-    InitAskListView();
 }
 
 void ThemeEditor::ImportExportClicked()
@@ -220,24 +204,21 @@ void ThemeEditor::OpenFolderButtonClicked()
 {
     QDesktopServices::openUrl(QUrl::fromLocalFile(fileHandler.folderPath));
 }
+
+void ThemeEditor::SettingsButtonClicked()
+{
+    auto settingsInterface = new SettingsInterface(this);
+    settingsInterface->setAttribute(Qt::WA_DeleteOnClose);
+    settingsInterface->show();
+
+}
+
 void ThemeEditor::ThemeModified()
 {
     ui->currentTheme->setText(currentTheme+"(modified)");
 }
-void ThemeEditor::InitAskListView()
+
+void ThemeEditor::OpacityChanged(int value)
 {
-//    ui->askColorList->
-//        setStyleSheet("padding: 5px; background-color:#2a2a2a; font-size:15px; color:#c0c0c3;");
-
-//    for(const auto& value : themeData)
-//    {
-//        QListWidgetItem *item = new QListWidgetItem;
-
-//        //设置子项相关信息
-//        item->setSizeHint(QSize(ui->askColorList->width(),50));
-//        item->setText(value.name);
-//        qDebug() << value.name;
-
-//        ui->askColorList->addItem(item);
-//    }
+    setWindowOpacity((windowOpacity = value)/100.0);
 }

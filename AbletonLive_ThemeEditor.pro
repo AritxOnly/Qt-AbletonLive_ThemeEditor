@@ -11,20 +11,21 @@ CONFIG += c++17
 SOURCES += \
     clickpositionfilter.cpp \
     filehandler.cpp \
-    graphicalinterface.cpp \
     main.cpp \
+    settingsinterface.cpp \
     themedata.cpp \
     themeeditor.cpp
 
 HEADERS += \
     clickpositionfilter.h \
     filehandler.h \
-    graphicalinterface.h \
     qheaders.h \
+    settingsinterface.h \
     themedata.h \
     themeeditor.h
 
 FORMS += \
+    settingsinterface.ui \
     themeeditor.ui
 
 QMAKE_CXXFLAGS += -w

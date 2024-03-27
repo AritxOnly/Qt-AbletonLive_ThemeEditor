@@ -4,7 +4,6 @@
 #include "qheaders.h"
 #include "themedata.h"
 #include "filehandler.h"
-#include "graphicalinterface.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -20,7 +19,6 @@ public:
     ThemeEditor(QWidget *parent = nullptr);
     ~ThemeEditor();
 
-    void InitAskListView();
 
     void ThemeListDoubleClicked(const QModelIndex &index);
     void ImportExportClicked();
@@ -29,8 +27,11 @@ public:
     void SaveSaveAsAltered();
     void HelpButtonClicked();
     void OpenFolderButtonClicked();
+    void SettingsButtonClicked();
     void ThemeModified();
+    void OpacityChanged(int value);
 
+    int windowOpacity = 100;
 private:
     Ui::ThemeEditor *ui;
     FileHandler fileHandler;
@@ -38,5 +39,6 @@ private:
 
     QStandardItemModel* themeItemModel;
     QString currentTheme;
+
 };
 #endif // THEMEEDITOR_H
