@@ -2,6 +2,7 @@
 #define THEMEDATA_H
 
 #include "qheaders.h"
+
 class ThemeData
 {
 public:

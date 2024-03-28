@@ -19,7 +19,6 @@ public:
     ThemeEditor(QWidget *parent = nullptr);
     ~ThemeEditor();
 
-    void closeEvent(QCloseEvent *event);    // 重载窗口关闭函数
 
     void ThemeListDoubleClicked(const QModelIndex &index);
     void ImportExportClicked();
@@ -27,15 +26,20 @@ public:
     void SaveSaveAsClicked();
     void SaveSaveAsAltered();
     void HelpButtonClicked();
+    void OpenFolderButtonClicked();
+    void SettingsButtonClicked();
     void ThemeModified();
+    void OpacityChanged(int value);
 
     Ui::ThemeEditor *ui;    // ui指针执为public方便editorui类引用修改
 
+    int windowOpacity = 100;
 private:
     FileHandler fileHandler;
     ThemeData themeData;
 
     QStandardItemModel* themeItemModel;
     QString currentTheme;
+
 };
 #endif // THEMEEDITOR_H

@@ -14,6 +14,7 @@ SOURCES += \
     filehandler.cpp \
     graphicalinterface.cpp \
     main.cpp \
+    settingsinterface.cpp \
     themedata.cpp \
     themeeditor.cpp
 
@@ -23,10 +24,12 @@ HEADERS += \
     filehandler.h \
     graphicalinterface.h \
     qheaders.h \
+    settingsinterface.h \
     themedata.h \
     themeeditor.h
 
 FORMS += \
+    settingsinterface.ui \
     themeeditor.ui
 
 QMAKE_CXXFLAGS += -w

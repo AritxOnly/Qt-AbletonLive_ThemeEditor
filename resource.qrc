@@ -10,6 +10,8 @@
         <file>resources/pics/template.png</file>
         <file>resources/pics/template0.png</file>
         <file>resources/pics/search.png</file>
+        <file>resources/pics/file-open.png</file>
+        <file>resources/pics/setting.png</file>
     </qresource>
     <qresource prefix="/asks">
         <file>resources/asks/template.ask</file>

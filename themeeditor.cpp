@@ -1,4 +1,5 @@
 #include "themeeditor.h"
+#include "settingsinterface.h"
 #include "ui_themeeditor.h"
 #include "clickpositionfilter.h"
 #include "editorui.h"
@@ -61,21 +62,15 @@ ThemeEditor::ThemeEditor(QWidget *parent)
     ui->saveSaveAs->installEventFilter(new ClickPositionFilter(ui->saveSaveAs));
 
 
+    ui->currentTheme->setAlignment(Qt::AlignCenter);
     //
     //关于和帮助
     connect(ui->helpButton, &QPushButton::clicked, this, &ThemeEditor::HelpButtonClicked);
 
-    themeData.BindOnModified(this,&ThemeEditor::ThemeModified);
+    connect(ui->openFolderButton,&QPushButton::clicked, this, &ThemeEditor::OpenFolderButtonClicked);
+    connect(ui->settingsButton,&QPushButton::clicked, this, &ThemeEditor::SettingsButtonClicked);
 
-    //取色器用法QColor Dialog，将QColor的RGB转化为HEX(Debug测试信号链接)
-//    connect(ui->actionDebug_Output, &QAction::triggered, this, [=]() {
-//        QColor color = QColorDialog::getColor(Qt::white,
-//                                              this,
-//                                              "Select the desired color...");
-//        QRgb mRGB = qRgb(color.red(), color.green(), color.blue());
-//        QString colorHex = QString::number(mRGB, 16);
-//        qDebug() << colorHex;
-//    });
+    themeData.BindOnModified(this,&ThemeEditor::ThemeModified);
 
 }
 
@@ -96,7 +91,6 @@ void ThemeEditor::ThemeListDoubleClicked(const QModelIndex &index)
     currentTheme = themeItemModel->data(index).toString();
     themeData.LoadData((fileHandler.folderPath+currentTheme+".ask").toUtf8());
     ui->currentTheme->setText(currentTheme);
-    EditorUI *editor = new EditorUI(this, &themeData);
 }
 
 void ThemeEditor::ImportExportClicked()
@@ -219,6 +213,19 @@ void ThemeEditor::HelpButtonClicked()
     msgBoxHelp.exec();
 }
 
+void ThemeEditor::OpenFolderButtonClicked()
+{
+    QDesktopServices::openUrl(QUrl::fromLocalFile(fileHandler.folderPath));
+}
+
+void ThemeEditor::SettingsButtonClicked()
+{
+    auto settingsInterface = new SettingsInterface(this);
+    settingsInterface->setAttribute(Qt::WA_DeleteOnClose);
+    settingsInterface->show();
+
+}
+
 void ThemeEditor::ThemeModified()
 {
     ui->currentTheme->setText(currentTheme+"(modified)");
@@ -235,4 +242,9 @@ void ThemeEditor::closeEvent(QCloseEvent *event)
         event->accept();
     else
         event->ignore();
+}
+
+void ThemeEditor::OpacityChanged(int value)
+{
+    setWindowOpacity((windowOpacity = value)/100.0);
 }
