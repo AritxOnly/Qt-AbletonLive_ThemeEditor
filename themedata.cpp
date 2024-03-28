@@ -89,7 +89,7 @@ void ThemeData::Tag::WriteTag(QByteArray& dat)
         dat += (i ? "true" : "false");
         break;
     case flt:
-        dat += QString::number(f).toUtf8();
+        dat += QString::number(f,'f',6).toUtf8();
         break;
     }
     dat += "\" /";
