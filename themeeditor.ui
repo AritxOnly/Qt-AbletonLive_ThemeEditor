@@ -548,6 +548,10 @@ selection-color: rgb(83, 83, 83);</string>
              <property name="text">
               <string/>
              </property>
+             <property name="icon">
+              <iconset resource="resource.qrc">
+               <normaloff>:/pics/resources/pics/search.png</normaloff>:/pics/resources/pics/search.png</iconset>
+             </property>
             </widget>
            </item>
            <item row="1" column="0" colspan="2">

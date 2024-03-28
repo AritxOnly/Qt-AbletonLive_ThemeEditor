@@ -12,6 +12,7 @@ SOURCES += \
     clickpositionfilter.cpp \
     editorui.cpp \
     filehandler.cpp \
+    graphicalinterface.cpp \
     main.cpp \
     themedata.cpp \
     themeeditor.cpp
@@ -20,6 +21,7 @@ HEADERS += \
     clickpositionfilter.h \
     editorui.h \
     filehandler.h \
+    graphicalinterface.h \
     qheaders.h \
     themedata.h \
     themeeditor.h
