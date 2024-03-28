@@ -4,6 +4,8 @@
 #include "qheaders.h"
 #include "themedata.h"
 #include "filehandler.h"
+#include "editorui.h"
+#include "graphicalinterface.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -31,15 +33,24 @@ public:
     void ThemeModified();
     void OpacityChanged(int value);
 
-    Ui::ThemeEditor *ui;    // ui指针执为public方便editorui类引用修改
-
     int windowOpacity = 100;
+
+    void closeEvent(QCloseEvent *event) override;
+
+    void ReloadFileList();
 private:
+    Ui::ThemeEditor *ui;
+
     FileHandler fileHandler;
-    ThemeData themeData;
+    ThemeData* themeData;
 
     QStandardItemModel* themeItemModel;
     QString currentTheme;
+
+    EditorUI* mainEditor;
+    GraphicalInterface* gi;
+
+    bool modified = false;
 
 };
 #endif // THEMEEDITOR_H

@@ -1,6 +1,5 @@
 #include "themedata.h"
 
-// pull request by Yuziki
 // 读取标签数据
 void ThemeData::Tag::ReadTag(QByteArray::iterator bg, QByteArray::iterator ed)
 {
@@ -170,7 +169,7 @@ QVector<ThemeData::Tag>::const_iterator ThemeData::end() const
     return v.cend();
 }
 
-const ThemeData::Tag& ThemeData::operator[](int i) const
+const ThemeData::Tag& ThemeData::at(uint i) const
 {
     return v[i];
 }
@@ -179,27 +178,18 @@ bool ThemeData::Modify(int i,float f)
 {
     if(v[i].type!=4)return false;
     v[i].f=f;
-    if(!modified)if(modified=true&&pf)pf(po);
+    if(modified=true&&pf)pf(po);
     return true;
 }
 bool ThemeData::Modify(int i,unsigned int u)
 {
     if(v[i].type>=4)return false;
     v[i].i=u;
-    if(!modified)if(modified=true&&pf)pf(po);
+    if(modified=true&&pf)pf(po);
     return true;
 }
 
-int ThemeData::Find(const QString& name) const
+uint ThemeData::size() const
 {
-    int cnt=0;
-    for(auto& tag:v)
-    {
-        if(tag.name==name&&tag.type<5)
-        {
-            return cnt;
-        }
-        ++cnt;
-    }
-    return -1;
+    return v.size();
 }

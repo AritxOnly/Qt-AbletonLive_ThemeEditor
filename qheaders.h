@@ -26,5 +26,7 @@
 #include <QByteArray>
 #include <QLineEdit>
 #include <QKeyEvent>
+#include <QGridLayout>
+#include <QListWidget>
 
 #endif // QHEADERS_H

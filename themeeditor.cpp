@@ -6,29 +6,28 @@
 
 
 ThemeEditor::ThemeEditor(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::ThemeEditor)
+    : QMainWindow(parent), ui(new Ui::ThemeEditor), themeData(new ThemeData)
 {
+
 
     ui->setupUi(this);
 
-    // UI初始化
-    ui->searchBar->setHidden(true);  //默认隐藏
-    ui->searchButton->setHidden(true);
-    ui->askColorList->setHidden(true);
+    mainEditor = new EditorUI(ui->demoArea);
+    ui->demoArea->layout()->addWidget(mainEditor);
+
 
     themeItemModel = new QStandardItemModel(ui->themeList);
     ui->themeList->setModel(themeItemModel);
-
-    themeItemModel->clear();
-    for(auto str:fileHandler.fileList)
-        themeItemModel->appendRow(new QStandardItem(str.remove(".ask")));
-
-
     connect(ui->themeList,
             &QListView::doubleClicked,
             this,
             &ThemeEditor::ThemeListDoubleClicked);
+
+    ReloadFileList();
+
+    gi = new GraphicalInterface(ui->demoArea);
+    ui->demoLayout->addWidget(gi);
+    ui->demoLayout->setStretch(1,3);
 
     ui->importExport->setText("Import");
     QMenu* importExportMenu = new QMenu();
@@ -70,8 +69,9 @@ ThemeEditor::ThemeEditor(QWidget *parent)
     connect(ui->openFolderButton,&QPushButton::clicked, this, &ThemeEditor::OpenFolderButtonClicked);
     connect(ui->settingsButton,&QPushButton::clicked, this, &ThemeEditor::SettingsButtonClicked);
 
-    themeData.BindOnModified(this,&ThemeEditor::ThemeModified);
+    themeData->BindOnModified(this,&ThemeEditor::ThemeModified);
 
+    this->setStyleSheet("background-color:#2a2a2a; font-size:15px; color:#c0c0c3;");
 }
 
 ThemeEditor::~ThemeEditor()
@@ -81,16 +81,11 @@ ThemeEditor::~ThemeEditor()
 
 void ThemeEditor::ThemeListDoubleClicked(const QModelIndex &index)
 {
-    if(ui->askColorList->isHidden())
-    {
-        ui->askColorList->setHidden(false);
-        ui->searchBar->setHidden(false);
-    }
-
-    ui->askColorList->clear();
     currentTheme = themeItemModel->data(index).toString();
-    themeData.LoadData((fileHandler.folderPath+currentTheme+".ask").toUtf8());
+    themeData->LoadData((fileHandler.folderPath+currentTheme+".ask").toUtf8());
     ui->currentTheme->setText(currentTheme);
+    mainEditor->ThemeDataChanged(themeData);
+    gi->setCurrectTheme(themeData);
 }
 
 void ThemeEditor::ImportExportClicked()
@@ -104,10 +99,7 @@ void ThemeEditor::ImportExportClicked()
         if (!src.open(QIODevice::ReadOnly))return;
         if (!dst.open(QIODevice::WriteOnly))return;
         dst.write(src.readAll());
-        fileHandler.ListThemeFolder();
-        themeItemModel->clear();
-        for(auto str:fileHandler.fileList)
-            themeItemModel->appendRow(new QStandardItem(str.remove(".ask")));
+
     }
     else
     {
@@ -128,6 +120,7 @@ void ThemeEditor::ImportExportClicked()
         if (!dst.open(QIODevice::WriteOnly))return;
         dst.write(src.readAll());
     }
+    ReloadFileList();
 }
 
 void ThemeEditor::ImportExportAltered()
@@ -157,16 +150,22 @@ void ThemeEditor::SaveSaveAsClicked()
     }
     if(ui->saveSaveAs->text()=="Save")
     {
-        themeData.SaveData(fileHandler.folderPath+currentTheme+".ask");
+        themeData->SaveData(fileHandler.folderPath+currentTheme+".ask");
     }
     else
     {
         auto path = QFileDialog::getSaveFileName(this,
                                                  "Save Theme File As...",
-                                                 currentTheme+".ask",
+                                                 fileHandler.folderPath+currentTheme+".ask",
                                                  "*.ask");
-        themeData.SaveData(path);
+        themeData->SaveData(path);
+        ReloadFileList();
+
+        currentTheme = path.sliced(path.lastIndexOf('/')+1).remove(".ask");
+        ui->currentTheme->setText(currentTheme);
     }
+    modified=false;
+    ui->currentTheme->setText(currentTheme);
 }
 
 void ThemeEditor::SaveSaveAsAltered()
@@ -228,17 +227,21 @@ void ThemeEditor::SettingsButtonClicked()
 
 void ThemeEditor::ThemeModified()
 {
-    ui->currentTheme->setText(currentTheme+"(modified)");
+    if(!modified)
+    {
+        modified = true;
+        ui->currentTheme->setText(currentTheme+"(modified)");
+    }
+
+    gi->setCurrectTheme(themeData);
 }
 
 // 重载窗口关闭事件
 void ThemeEditor::closeEvent(QCloseEvent *event)
 {
-    QMessageBox::StandardButton close =
-        QMessageBox::question(this,"Quit",
-        "Are you sure to exit the editor?\nPlease make sure you have saved all your works.",
-        QMessageBox::Cancel | QMessageBox::Yes);
-    if(close == QMessageBox::Yes)
+    if(!modified ||
+        QMessageBox::question(this,"Quit", "Changes have been made.\n Are you sure to quit?",
+        QMessageBox::Cancel | QMessageBox::Yes) == QMessageBox::Yes)
         event->accept();
     else
         event->ignore();
@@ -247,4 +250,12 @@ void ThemeEditor::closeEvent(QCloseEvent *event)
 void ThemeEditor::OpacityChanged(int value)
 {
     setWindowOpacity((windowOpacity = value)/100.0);
+}
+
+void ThemeEditor::ReloadFileList()
+{
+    fileHandler.ListThemeFolder();
+    themeItemModel->clear();
+    for(auto str:fileHandler.fileList)
+        themeItemModel->appendRow(new QStandardItem(str.remove(".ask")));
 }

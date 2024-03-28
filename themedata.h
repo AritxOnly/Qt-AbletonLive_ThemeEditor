@@ -51,11 +51,10 @@ public:
     QVector<Tag>::const_iterator begin() const;
     QVector<Tag>::const_iterator end() const;
 
-    //get element by index
-    const Tag& operator[](int i) const;
+    uint size() const;
 
-    //find the index by tag name
-    int Find(const QString& name) const;
+    //get element by index
+    const Tag& at(uint i) const;
 
     //modify the tag's value by index
     //return true when successfully modified

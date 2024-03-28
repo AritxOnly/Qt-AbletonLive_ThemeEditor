@@ -17,7 +17,7 @@ protected:
 private:
     ThemeData norm;
     QImage img,tp,tp0;
-    ThemeData* curTheme = nullptr;
+    ThemeData* themeData = nullptr;
 
 };
 

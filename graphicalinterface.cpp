@@ -13,7 +13,7 @@ GraphicalInterface::GraphicalInterface(QWidget *parent)
 
 void GraphicalInterface::paintEvent(QPaintEvent* event)
 {
-    if(!curTheme)return;
+    if(!themeData)return;
     QPainter painter(this);
     QRect wr = rect(),ir = img.rect();
     double sf = std::min(1.0*wr.width()/ir.width(),1.0*wr.height()/ir.height());
@@ -22,19 +22,15 @@ void GraphicalInterface::paintEvent(QPaintEvent* event)
     painter.drawImage(dr,img);
 }
 
-void GraphicalInterface::setCurrectTheme(ThemeData* cur)
+void GraphicalInterface::setCurrectTheme(ThemeData* td)
 {
-    curTheme=cur;
+    themeData = td;
     img = QImage(tp.width(),tp.height(),QImage::Format::Format_ARGB32);
     for(int i=0,w=tp.width();i<w;++i)
     {
         for(int j=0,h=tp.height();j<h;++j)
         {
-
-
-            unsigned int rgb = tp0.pixel(i,j)&0xffffff;
-
-
+            uint rgb = tp0.pixel(i,j)&0xffffff;
             if(rgb>0x200000)
             {
                 img.setPixel(i,j,rgb|0xff000000);
@@ -47,16 +43,12 @@ void GraphicalInterface::setCurrectTheme(ThemeData* cur)
                 continue;
             }
             int c = ((rgb&0xf0)>>4)|((rgb&0xf000)>>8)|((rgb&0xf00000)>>12);
-            if(c>=cur->end()-cur->begin())
+            if(c>=td->size())
             {
                 img.setPixel(i,j,rgb|0xff000000);
                 continue;
             }
-            auto tag = (*cur)[c];
-
-
-
-
+            auto tag = td->at(c);
 
             if(tag.type == ThemeData::rgb)
             {
@@ -78,11 +70,11 @@ void GraphicalInterface::setCurrectTheme(ThemeData* cur)
                 continue;
             }
             int c = ((rgb&0xf0)>>4)|((rgb&0xf000)>>8)|((rgb&0xf00000)>>12);
-            if(c>=cur->end()-cur->begin())
+            if(c>=td->size())
             {
                 continue;
             }
-            auto tag = (*cur)[c];
+            auto tag = td->at(c);
             if(tag.type == ThemeData::rgba)
             {
                 uint al = tag.i&0xff,r=tag.i>>8;

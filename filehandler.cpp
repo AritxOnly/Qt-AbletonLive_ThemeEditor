@@ -3,7 +3,6 @@
 FileHandler::FileHandler()
 {
     FindThemeFolder();
-    ListThemeFolder();
 }
 
 bool FileHandler::FindThemeFolder()

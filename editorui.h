@@ -7,35 +7,27 @@
 
 #include "qheaders.h"
 #include "themedata.h"
-#include "themeeditor.h"
-#include "ui_themeeditor.h"
 
-class ThemeEditor;
-
-class EditorUI : public QMainWindow
+class EditorUI : public QWidget
 {
     Q_OBJECT
 public:
-    explicit EditorUI(ThemeEditor *parent = nullptr, ThemeData *themeData = nullptr);
+    explicit EditorUI(QWidget *parent = nullptr);
 
-    ThemeEditor *p; //parent指针，由构造函数传参传入
-
-    void InitAskListView(ThemeData themeData);
-    void ColorDialog(ThemeData *themeData);
-
-    QColor Int2QColorRGBA(unsigned int i);
-
-public slots:
-    void onTextChanged(const QString &text);
-    void SearchBarAction();
+    void TextChanged(const QString &text);
+    void ThemeDataChanged(ThemeData* td);
+    void ItemDoubleClicked(const QModelIndex &modelIndex);
 
 private:
-    QString target;
+    ThemeData* themeData = nullptr;
 
-protected:
-    bool eventFilter(QObject *target, QEvent *event);
+    QVBoxLayout *vLayout;
+    QLineEdit *searchBar;
+    QListView *dataList;
+    QStandardItemModel *itemModel;
+    QPixmap transPix;
 
-signals:
+    void SetItemColor(QStandardItem* item, uint c);
 };
 
 #endif // EDITORUI_H

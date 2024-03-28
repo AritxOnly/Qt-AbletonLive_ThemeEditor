@@ -1,173 +1,152 @@
 #include "editorui.h"
 
-EditorUI::EditorUI(ThemeEditor *parent, ThemeData *themeData)
+EditorUI::EditorUI(QWidget *parent)
 {
-    p = parent;
+    transPix.load(":/pics/resources/pics/transparent.png");
 
-    InitAskListView(*themeData);
+    searchBar = new QLineEdit(this);
+    searchBar->setHidden(true);
+    searchBar->setStyleSheet("color: #adadad;"
+                             "border-color: #3f3f3f;"
+                             "selection-color: #535353;"
+                             "border-radius:10px;"
+                             "background-color:#202022");
+    searchBar->setPlaceholderText("Search...");
+    searchBar->setFixedHeight(40);
+
+    dataList = new QListView(this);
+    dataList->setHidden(true);
+    dataList->setStyleSheet("background-color:#2a2a2a;"
+                            "color: #c0c0c3; "
+                            "font-size:15px; color:#c0c0c3;"
+                            "border-radius:20px;");
+    dataList->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    dataList->setModel(itemModel = new QStandardItemModel);
+    dataList->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
+
+
+    vLayout = new QVBoxLayout(this);
+    vLayout->addWidget(searchBar);
+    vLayout->addWidget(dataList);
 
     // 初始化控件
-    p->ui->searchBar->installEventFilter(this); // 设置eventFilter
-    p->ui->searchButton->setHidden(true);
-    p->ui->searchButton->setIcon(QIcon(":/pics/resources/pics/search.png"));
+    //searchBar->installEventFilter(this); // 设置eventFilter
+
 
 
     // 信号与槽
-    connect(p->ui->searchBar,
-            &QLineEdit::textChanged,
-            this,
-            &EditorUI::onTextChanged);
+    connect(searchBar,&QLineEdit::textChanged,
+            this,&EditorUI::TextChanged);
 
-    connect(p->ui->searchButton,
-            &QPushButton::clicked,
-            this,
-            &EditorUI::SearchBarAction);
+    connect(dataList,&QListView::doubleClicked,
+            this,&EditorUI::ItemDoubleClicked);
 
-    connect(p->ui->askColorList,
-            &QListWidget::itemDoubleClicked,
-            this,
-            [=]() {
-                ColorDialog(themeData);
-            });
+
+}
+void EditorUI::ThemeDataChanged(ThemeData* td)
+{
+
+    themeData = td;
+    itemModel->clear();
+
+    if(!td)
+    {
+        searchBar->setHidden(true);
+        dataList->setHidden(true);
+        return;
+    }
+    searchBar->setHidden(false);
+    dataList->setHidden(false);
+
+    for(uint i=0,s = themeData->size();i<s;++i)
+    {
+        auto& tag = themeData->at(i);
+        if(tag.type!=ThemeData::rgb && tag.type != ThemeData::rgba)
+        {
+            continue;
+        }
+        auto item = new QStandardItem;
+        //设置子项相关信息
+
+        item->setSizeHint(QSize(0, 48));
+
+        item->setText(tag.name);
+
+
+        uint c = tag.i;
+        if(tag.type==ThemeData::rgba)c = (c>>8)|((c&0xff)<<24);
+        else c|=0xff000000;
+
+        if((c&0xff)+((c>>8)&0xff)+((c>>16)&0xff)>300)item->setForeground(Qt::black);
+        else item->setForeground(Qt::white);
+
+        SetItemColor(item,c);
+        item->setData(i);
+
+        itemModel->appendRow(item);
+
+    }
 }
 
-void EditorUI::InitAskListView(ThemeData themeData)
+void EditorUI::TextChanged(const QString &text)
 {
-    p->ui->askColorList->
-        setStyleSheet("padding: 5px; background-color:#2a2a2a; font-size:15px; color:#c0c0c3;");
+    auto match = itemModel->findItems(text, Qt::MatchContains);
 
-    for(const auto& value : themeData)
+    for(uint i=0,s=itemModel->rowCount();i<s;++i)
     {
-        if(value.type == ThemeData::rgb || value.type == ThemeData::rgba)
-        {
-            QListWidgetItem *item = new QListWidgetItem;
+        auto it = itemModel->item(i);
+        it->setFlags(it->flags() & ~Qt::ItemIsEnabled);
+    }
+    for(auto& item:match)
+    {
+        item->setFlags(item->flags() | Qt::ItemIsEnabled);
+    }
+}
 
-            //设置子项相关信息
-            item->setSizeHint(QSize(p->ui->askColorList->width(), 50));
-            item->setText(value.name);
-            item->setToolTip("#" + QString::number(value.i, 16));
-            // qDebug() << value.name << value.i;
-            int hexValue_withoutAlpha = value.i;
-            if(hexValue_withoutAlpha >> 24 != 0)
-                hexValue_withoutAlpha /= 0x100;
-            if(hexValue_withoutAlpha % 0x1000000 <= 0x888888)
-                item->setForeground(Qt::white);
-            else
-                item->setForeground(Qt::black);
+void EditorUI::ItemDoubleClicked(const QModelIndex &modelIndex)
+{
+    QStandardItem *item = itemModel->itemFromIndex(modelIndex);
+    uint index = item->data().toUInt();
 
-            item->setBackground(Int2QColorRGBA(value.i));
-            item->setData(Qt::UserRole, value.i);    //颜色存储，方便调用
+    auto& tag = themeData->at(index);
+    uint c = tag.i;
 
-            // hint: can I store the Index in the item?
+    QColorDialog colorDiag(this);
+    colorDiag.setStyleSheet("color:#c0c0c3;");
 
-            p->ui->askColorList->addItem(item);
+    colorDiag.setWindowTitle(tag.name);
+    if(tag.type==ThemeData::rgba)
+    {
+        colorDiag.setOption(QColorDialog::ShowAlphaChannel);
+        colorDiag.setCurrentColor(QColor((c>>24)&0xff,(c>>16)&0xff,(c>>8)&0xff,c&0xff));
+        colorDiag.exec();
+
+        if (colorDiag.result() == QDialog::Accepted) {
+            uint c  = colorDiag.currentColor().rgba();
+            themeData->Modify(index, c = (c>>8)|((c&0xff)<<24));
+            SetItemColor(item,c);
         }
     }
-}
-
-QColor EditorUI::Int2QColorRGBA(unsigned int i)
-{
-    QString hex = QString::number(i, 16);    //转字符串
-    // qDebug() << hex;
-    QColor color2(hex.toUInt(NULL,16));
-    return color2;
-}
-
-void EditorUI::ColorDialog(ThemeData *themeData)
-{
-    QListWidgetItem *item = p->ui->askColorList->currentItem();
-    int index = themeData->Find(item->text());
-
-    QColor color = QColorDialog::getColor(Int2QColorRGBA(item->data(Qt::UserRole).toInt()),
-                                          this,
-                                          "Select the desired color...",
-                                          QColorDialog::ShowAlphaChannel);
-
-    qDebug() << color.isValid();
-
-    if(color.isValid())
+    else
     {
-        QRgb mRGB = qRgba(color.red(), color.green(), color.blue(), color.alpha());
-        QString colorHex = QString::number(mRGB, 16);
-        unsigned int hexValue = colorHex.toUInt(nullptr, 16);
-        if(hexValue >> 24 == 255)
-            hexValue %= 0x1000000;   // 若颜色为完全不透明，则去掉首位的alpha值
-        else
-        {
-            // 若颜色透明，则将hex值由QRgb的AARRGGBB改为xml中的RRGGBBAA
-            int alphaValue = hexValue / 0x1000000;
-            hexValue %= 0x1000000;
-            hexValue = hexValue * 0x100 + alphaValue;
-        }
-        qDebug() << colorHex << hexValue << QString::number(hexValue, 16);
-
-        item->setBackground(color);
-
-        // 对颜色值进行修改
-        qDebug() << themeData->
-                          Modify(index, hexValue);
-    }
-}
-
-void EditorUI::onTextChanged(const QString &text)
-{
-    target = text;
-
-    // 设置清空动作
-    if(text.isEmpty())
-    {
-        p->ui->searchButton->setHidden(true);
-
-        for(int i = 0; i < p->ui->askColorList->count(); i++)
-            p->ui->askColorList->item(i)->setHidden(false);
-    } else {
-        p->ui->searchButton->setHidden(false);
-    }
-}
-
-void EditorUI::SearchBarAction()
-{
-    QString targetWildcard;
-
-    // target wildcard initiallize
-    targetWildcard.clear();
-    targetWildcard.push_back('*');
-
-    for(int index = 0; index < target.size(); ++index)
-    {
-        targetWildcard.push_back(target[index] + '*');
-    }
-
-    QList<QListWidgetItem*> match = p->ui->askColorList->
-                                     findItems(targetWildcard, Qt::MatchWildcard);
-
-    for(int index = 0; index < p->ui->askColorList->count(); ++index)
-    {
-        if(!match.contains(p->ui->askColorList->item(index)))
-        {
-            p->ui->askColorList->item(index)->setHidden(true);
-            // item隐藏
+        colorDiag.setCurrentColor(c);
+        colorDiag.exec();
+        if (colorDiag.result() == QDialog::Accepted) {
+            uint c = colorDiag.currentColor().rgb();
+            themeData->Modify(index, c);
+            SetItemColor(item,c);
         }
     }
 
 }
 
-// 按下Enter搜索
-bool EditorUI::eventFilter(QObject *target, QEvent *event)
+void EditorUI::SetItemColor(QStandardItem* item, uint c)
 {
-    if(target == p->ui->searchBar)
-    {
-        if(event->type() == QEvent::KeyPress)
-        {
-            // 强制将QEvent转QKeyEvent
-            QKeyEvent *pressed = static_cast<QKeyEvent*>(event);
-
-            if(pressed->key() == Qt::Key_Return)
-            {
-                SearchBarAction();
-                return true;
-            }
-        }
-    }
-    return QWidget::eventFilter(target, event);
+    QPixmap tmp = transPix;
+    QPainter pt(&tmp);
+    pt.setOpacity(1.0*(c>>24)/0xff);
+    pt.fillRect(tmp.rect(),c);
+    pt.end();
+    item->setBackground(QBrush(tmp));
 }
