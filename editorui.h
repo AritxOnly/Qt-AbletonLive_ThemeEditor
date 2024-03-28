@@ -25,7 +25,15 @@ public:
 
     QColor Int2QColorRGBA(unsigned int i);
 
-    void SearchBarAction(ThemeData *themeData);
+public slots:
+    void onTextChanged(const QString &text);
+    void SearchBarAction();
+
+private:
+    QString target;
+
+protected:
+    bool eventFilter(QObject *target, QEvent *event);
 
 signals:
 };

@@ -11,6 +11,10 @@ ThemeEditor::ThemeEditor(QWidget *parent)
 
     ui->setupUi(this);
 
+    // UI初始化
+    ui->searchBar->setHidden(true);  //默认隐藏
+    ui->searchButton->setHidden(true);
+    ui->askColorList->setHidden(true);
 
     themeItemModel = new QStandardItemModel(ui->themeList);
     ui->themeList->setModel(themeItemModel);
@@ -82,8 +86,13 @@ ThemeEditor::~ThemeEditor()
 
 void ThemeEditor::ThemeListDoubleClicked(const QModelIndex &index)
 {
+    if(ui->askColorList->isHidden())
+    {
+        ui->askColorList->setHidden(false);
+        ui->searchBar->setHidden(false);
+    }
+
     ui->askColorList->clear();
-    //bug exists themeData isn't clear
     currentTheme = themeItemModel->data(index).toString();
     themeData.LoadData((fileHandler.folderPath+currentTheme+".ask").toUtf8());
     ui->currentTheme->setText(currentTheme);

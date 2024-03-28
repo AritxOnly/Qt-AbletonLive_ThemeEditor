@@ -4,9 +4,24 @@ EditorUI::EditorUI(ThemeEditor *parent, ThemeData *themeData)
 {
     p = parent;
 
-    // SearchBar still WIP
-
     InitAskListView(*themeData);
+
+    // 初始化控件
+    p->ui->searchBar->installEventFilter(this); // 设置eventFilter
+    p->ui->searchButton->setHidden(true);
+    p->ui->searchButton->setIcon(QIcon(":/pics/resources/pics/search.png"));
+
+
+    // 信号与槽
+    connect(p->ui->searchBar,
+            &QLineEdit::textChanged,
+            this,
+            &EditorUI::onTextChanged);
+
+    connect(p->ui->searchButton,
+            &QPushButton::clicked,
+            this,
+            &EditorUI::SearchBarAction);
 
     connect(p->ui->askColorList,
             &QListWidget::itemDoubleClicked,
@@ -28,9 +43,9 @@ void EditorUI::InitAskListView(ThemeData themeData)
             QListWidgetItem *item = new QListWidgetItem;
 
             //设置子项相关信息
-            item->setSizeHint(QSize(p->ui->askColorList->width(),50));
+            item->setSizeHint(QSize(p->ui->askColorList->width(), 50));
             item->setText(value.name);
-            item->setWhatsThis("#" + QString::number(value.i, 16));
+            item->setToolTip("#" + QString::number(value.i, 16));
             // qDebug() << value.name << value.i;
             int hexValue_withoutAlpha = value.i;
             if(hexValue_withoutAlpha >> 24 != 0)
@@ -92,4 +107,67 @@ void EditorUI::ColorDialog(ThemeData *themeData)
         qDebug() << themeData->
                           Modify(index, hexValue);
     }
+}
+
+void EditorUI::onTextChanged(const QString &text)
+{
+    target = text;
+
+    // 设置清空动作
+    if(text.isEmpty())
+    {
+        p->ui->searchButton->setHidden(true);
+
+        for(int i = 0; i < p->ui->askColorList->count(); i++)
+            p->ui->askColorList->item(i)->setHidden(false);
+    } else {
+        p->ui->searchButton->setHidden(false);
+    }
+}
+
+void EditorUI::SearchBarAction()
+{
+    QString targetWildcard;
+
+    // target wildcard initiallize
+    targetWildcard.clear();
+    targetWildcard.push_back('*');
+
+    for(int index = 0; index < target.size(); ++index)
+    {
+        targetWildcard.push_back(target[index] + '*');
+    }
+
+    QList<QListWidgetItem*> match = p->ui->askColorList->
+                                     findItems(targetWildcard, Qt::MatchWildcard);
+
+    for(int index = 0; index < p->ui->askColorList->count(); ++index)
+    {
+        if(!match.contains(p->ui->askColorList->item(index)))
+        {
+            p->ui->askColorList->item(index)->setHidden(true);
+            // item隐藏
+        }
+    }
+
+}
+
+// 按下Enter搜索
+bool EditorUI::eventFilter(QObject *target, QEvent *event)
+{
+    if(target == p->ui->searchBar)
+    {
+        if(event->type() == QEvent::KeyPress)
+        {
+            // 强制将QEvent转QKeyEvent
+            QKeyEvent *pressed = static_cast<QKeyEvent*>(event);
+
+            if(pressed->key() == Qt::Key_Return)
+            {
+                SearchBarAction();
+                return true;
+            }
+        }
+    }
+    return QWidget::eventFilter(target, event);
 }

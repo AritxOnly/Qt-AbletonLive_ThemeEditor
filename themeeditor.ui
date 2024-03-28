@@ -521,8 +521,8 @@ font-size:15px;</string>
         </item>
         <item>
          <widget class="QWidget" name="demoArea" native="true">
-          <layout class="QVBoxLayout" name="verticalLayout_2">
-           <item>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
             <widget class="QLineEdit" name="searchBar">
              <property name="enabled">
               <bool>true</bool>
@@ -543,7 +543,14 @@ selection-color: rgb(83, 83, 83);</string>
              </property>
             </widget>
            </item>
-           <item>
+           <item row="0" column="1">
+            <widget class="QPushButton" name="searchButton">
+             <property name="text">
+              <string/>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0" colspan="2">
             <widget class="QListWidget" name="askColorList"/>
            </item>
           </layout>

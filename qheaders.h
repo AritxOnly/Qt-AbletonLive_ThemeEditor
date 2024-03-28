@@ -25,5 +25,6 @@
 #include <QColorDialog>
 #include <QByteArray>
 #include <QLineEdit>
+#include <QKeyEvent>
 
 #endif // QHEADERS_H
