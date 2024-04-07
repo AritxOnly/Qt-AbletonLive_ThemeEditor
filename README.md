@@ -1,5 +1,4 @@
-## Alpha测试阶段，欢迎提交issues! <br>
-## Alpha test state, issues are welcomed <br>
+#### Alpha测试阶段，欢迎提交issues! <br>Alpha test state, issues are welcomed <br>
 
 ### zh_CN Readme Guide
 # Ableton Live 主题编辑器
