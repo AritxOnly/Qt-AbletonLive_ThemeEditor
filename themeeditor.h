@@ -21,6 +21,7 @@ public:
     ThemeEditor(QWidget *parent = nullptr);
     ~ThemeEditor();
 
+    QString version;
 
     void ThemeListDoubleClicked(const QModelIndex &index);
     void ImportExportClicked();

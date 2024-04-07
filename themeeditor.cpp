@@ -8,7 +8,8 @@
 ThemeEditor::ThemeEditor(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::ThemeEditor), themeData(new ThemeData)
 {
-
+    //封包前修改
+    version = "v1.0-a1";
 
     ui->setupUi(this);
 
@@ -188,14 +189,16 @@ void ThemeEditor::HelpButtonClicked()
     //设置窗体信息
     msgBoxHelp.setIcon(QMessageBox::Question);
     msgBoxHelp.setWindowTitle("Information");
-    msgBoxHelp.setText("Ableton Live Theme Editor\nContact Us on Github!");
+    msgBoxHelp.setText("Ableton Live Theme Editor " + version + "\nContact Us on Github!");
     msgBoxHelp.setStyleSheet("background-color:#2a2a2a; color: #a0a0a2;");
     //按钮
     QPushButton *btnAbout;
     QPushButton *btnHelp;
+    QPushButton *btnBugReport;
 
     btnAbout = msgBoxHelp.addButton("About", QMessageBox::ActionRole);
     btnHelp = msgBoxHelp.addButton("Help", QMessageBox::ActionRole);
+    btnBugReport = msgBoxHelp.addButton("Bug Report", QMessageBox::ActionRole);
     msgBoxHelp.addButton("Close", QMessageBox::RejectRole)->setVisible(false);
     //槽连接
     connect(btnAbout, &QPushButton::clicked, this, [=]() {
@@ -204,6 +207,12 @@ void ThemeEditor::HelpButtonClicked()
     });
 
     connect(btnHelp, &QPushButton::clicked, this, [=]() {
+        //后续维护知识库
+        QString url = "https://github.com/AritxOnly/Qt-AbletonLive_ThemeEditor/wiki";
+        QDesktopServices::openUrl(url);
+    });
+
+    connect(btnBugReport, &QPushButton::clicked, this, [=]() {
         QString url = "https://github.com/AritxOnly/Qt-AbletonLive_ThemeEditor/issues";
         QDesktopServices::openUrl(url);
     });
@@ -220,6 +229,9 @@ void ThemeEditor::OpenFolderButtonClicked()
 void ThemeEditor::SettingsButtonClicked()
 {
     auto settingsInterface = new SettingsInterface(this);
+
+    settingsInterface->setWindowTitle("Settings");  // 设置窗体标题
+
     settingsInterface->setAttribute(Qt::WA_DeleteOnClose);
     settingsInterface->show();
 

@@ -44,6 +44,7 @@ EditorUI::EditorUI(QWidget *parent)
 
 
 }
+
 void EditorUI::ThemeDataChanged(ThemeData* td)
 {
 
@@ -97,6 +98,12 @@ void EditorUI::TextChanged(const QString &text)
     {
         auto it = itemModel->item(i);
         it->setFlags(it->flags() & ~Qt::ItemIsEnabled);
+
+        // 实现搜索隐藏不相关条目的功能
+        if(!match.contains(it))
+            it->setSizeHint(QSize(0, 0));   // 曲线救国：将w和h直接设置为0
+        else
+            it->setSizeHint(QSize(0, 48));
     }
     for(auto& item:match)
     {
