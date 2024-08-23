@@ -3,8 +3,10 @@
 
 #include "qheaders.h"
 
-class ThemeData
+class ThemeData: public QObject
 {
+    Q_OBJECT
+
 public:
     enum ValueType
     {
@@ -31,17 +33,18 @@ public:
     };
 
     ThemeData();
+    ~ThemeData();
     bool LoadData(const QString& fileName);
     bool SaveData(const QString& fileName);
 
-    /*
-     * do not call or modify it
-     */
-    template<typename T> void BindOnModified(T* o, void(T::*f)())
-    {
-        po = reinterpret_cast<void*>(o);
-        pf = reinterpret_cast<void(*)(void*)>(f);
-    }
+    // /*
+    //  * do not call or modify it
+    //  */
+    // template<typename T> void BindOnModified(T* o, void(T::*f)())
+    // {
+    //     po = reinterpret_cast<void*>(o);
+    //     pf = reinterpret_cast<void(*)(void*)>(f);
+    // }
 
     /*
      *used for iterating through tags
@@ -61,12 +64,14 @@ public:
     bool Modify(int i,float f);
     bool Modify(int i,unsigned int f);
 
+signals:
+    void Modified();
 
 private:
     QVector<Tag> v;
     bool modified;
-    void* po = nullptr;
-    void(*pf)(void*) = nullptr;
+    // void* po = nullptr;
+    // void(*pf)(void*) = nullptr;
 };
 
 #endif // THEMEDATA_H
