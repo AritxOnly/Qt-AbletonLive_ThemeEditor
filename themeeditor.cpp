@@ -70,7 +70,8 @@ ThemeEditor::ThemeEditor(QWidget *parent)
     connect(ui->openFolderButton,&QPushButton::clicked, this, &ThemeEditor::OpenFolderButtonClicked);
     connect(ui->settingsButton,&QPushButton::clicked, this, &ThemeEditor::SettingsButtonClicked);
 
-    themeData->BindOnModified(this,&ThemeEditor::ThemeModified);
+    // themeData->BindOnModified(this,&ThemeEditor::ThemeModified);
+    connect(themeData, &ThemeData::Modified, this, &ThemeEditor::ThemeModified);    // 信号与槽修改
 
     this->setStyleSheet("background-color:#2a2a2a; font-size:15px; color:#c0c0c3;");
 }

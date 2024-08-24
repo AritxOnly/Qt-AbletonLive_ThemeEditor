@@ -1,4 +1,5 @@
 #include "themedata.h"
+#include <iostream>
 
 // 读取标签数据
 void ThemeData::Tag::ReadTag(QByteArray::iterator bg, QByteArray::iterator ed)
@@ -159,6 +160,11 @@ ThemeData::ThemeData()
     // 初始化函数体为空
 }
 
+ThemeData::~ThemeData()
+{
+
+}
+
 QVector<ThemeData::Tag>::const_iterator ThemeData::begin() const
 {
     return v.cbegin();
@@ -176,16 +182,22 @@ const ThemeData::Tag& ThemeData::at(uint i) const
 
 bool ThemeData::Modify(int i,float f)
 {
-    if(v[i].type!=4)return false;
-    v[i].f=f;
-    if(modified=true&&pf)pf(po);
+    if(v[i].type != 4)
+        return false;
+    v[i].f = f;
+    // if(modified == true)
+    emit Modified();
+    std::cout << "Modified triggered\n";
     return true;
 }
 bool ThemeData::Modify(int i,unsigned int u)
 {
-    if(v[i].type>=4)return false;
-    v[i].i=u;
-    if(modified=true&&pf)pf(po);
+    if(v[i].type >= 4)
+        return false;
+    v[i].i = u;
+    // if(modified == true)
+    emit Modified();
+    std::cout << "Modified triggered\n";
     return true;
 }
 

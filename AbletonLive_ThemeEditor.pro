@@ -49,3 +49,6 @@ RC_FILE += \
 
 # 编译后生成exe名称设置
 TARGET = AbletonLiveThemeEditor
+
+# MACOS图标
+ICON = resources/icons/logo.icns
