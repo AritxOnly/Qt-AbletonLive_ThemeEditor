@@ -9,7 +9,7 @@ ThemeEditor::ThemeEditor(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::ThemeEditor), themeData(new ThemeData)
 {
     //封包前修改
-    version = "v1.0-a1";
+    version = "v1.0";
 
     ui->setupUi(this);
 
