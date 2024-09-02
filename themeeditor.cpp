@@ -3,7 +3,9 @@
 #include "ui_themeeditor.h"
 #include "clickpositionfilter.h"
 #include "editorui.h"
+#include "redohandler.h"
 
+#include <iostream>
 
 ThemeEditor::ThemeEditor(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::ThemeEditor), themeData(new ThemeData)
@@ -15,7 +17,7 @@ ThemeEditor::ThemeEditor(QWidget *parent)
 
     mainEditor = new EditorUI(ui->demoArea);
     ui->demoArea->layout()->addWidget(mainEditor);
-
+    mainEditor->setThemeEditor(this);
 
     themeItemModel = new QStandardItemModel(ui->themeList);
     ui->themeList->setModel(themeItemModel);
@@ -74,6 +76,8 @@ ThemeEditor::ThemeEditor(QWidget *parent)
     connect(themeData, &ThemeData::Modified, this, &ThemeEditor::ThemeModified);    // 信号与槽修改
 
     this->setStyleSheet("background-color:#2a2a2a; font-size:15px; color:#c0c0c3;");
+
+    redoHandler = new RedoHandler;
 }
 
 ThemeEditor::~ThemeEditor()
@@ -271,4 +275,35 @@ void ThemeEditor::ReloadFileList()
     themeItemModel->clear();
     for(auto str:fileHandler.fileList)
         themeItemModel->appendRow(new QStandardItem(str.remove(".ask")));
+}
+
+RedoHandler* ThemeEditor::getRedoHandler() {
+    return redoHandler;
+}
+
+void ThemeEditor::keyPressEvent(QKeyEvent *event) {
+    if (event->matches(QKeySequence::Undo)) {
+        std::cout << "Undo\n";
+        auto undo = redoHandler->undo();
+        std::cout << "Getting themeData from:" << undo << "\n";
+        if (undo == nullptr) {
+            goto pass;
+        }
+        *themeData = *undo;  // Deep Copy
+        std::cout << "Now loading data\n";
+        mainEditor->ThemeDataChanged(themeData);
+        gi->setCurrectTheme(themeData);
+    }
+    if (event->matches(QKeySequence::Redo)) {
+        std::cout << "Redo\n";
+        auto redo = redoHandler->redo();
+        if (redo == nullptr) {
+            goto pass;
+        }
+        *themeData = *redo;  // Deep Copy
+        mainEditor->ThemeDataChanged(themeData);
+        gi->setCurrectTheme(themeData);
+    }
+    pass:
+        QMainWindow::keyPressEvent(event);
 }

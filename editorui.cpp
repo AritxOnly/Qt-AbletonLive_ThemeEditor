@@ -1,4 +1,6 @@
 #include "editorui.h"
+#include "redohandler.h"
+#include "themeeditor.h"
 
 EditorUI::EditorUI(QWidget *parent)
 {
@@ -130,6 +132,9 @@ void EditorUI::ItemDoubleClicked(const QModelIndex &modelIndex)
         colorDiag.exec();
 
         if (colorDiag.result() == QDialog::Accepted) {
+            if (editor != nullptr) {
+                editor->getRedoHandler()->pushFileSnapshot(themeData);
+            }
             uint c  = colorDiag.currentColor().rgba();
             themeData->Modify(index, c = (c>>8)|((c&0xff)<<24));
             SetItemColor(item,c);
@@ -140,6 +145,9 @@ void EditorUI::ItemDoubleClicked(const QModelIndex &modelIndex)
         colorDiag.setCurrentColor(c);
         colorDiag.exec();
         if (colorDiag.result() == QDialog::Accepted) {
+            if (editor != nullptr) {
+                editor->getRedoHandler()->pushFileSnapshot(themeData);
+            }
             uint c = colorDiag.currentColor().rgb();
             themeData->Modify(index, c);
             SetItemColor(item,c);
@@ -156,4 +164,8 @@ void EditorUI::SetItemColor(QStandardItem* item, uint c)
     pt.fillRect(tmp.rect(),c);
     pt.end();
     item->setBackground(QBrush(tmp));
+}
+
+void EditorUI::setThemeEditor(ThemeEditor* _editor) {
+    editor = _editor;
 }

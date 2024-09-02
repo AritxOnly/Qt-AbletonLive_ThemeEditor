@@ -165,6 +165,12 @@ ThemeData::~ThemeData()
 
 }
 
+ThemeData& ThemeData::operator=(const ThemeData& src) {
+    v = src.v;
+    modified = src.modified;
+    return *this;
+}
+
 QVector<ThemeData::Tag>::const_iterator ThemeData::begin() const
 {
     return v.cbegin();

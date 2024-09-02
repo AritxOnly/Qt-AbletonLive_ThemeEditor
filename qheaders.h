@@ -28,5 +28,6 @@
 #include <QKeyEvent>
 #include <QGridLayout>
 #include <QListWidget>
+#include <deque>
 
 #endif // QHEADERS_H
