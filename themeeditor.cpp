@@ -67,10 +67,23 @@ ThemeEditor::ThemeEditor(QWidget *parent)
     ui->currentTheme->setAlignment(Qt::AlignCenter);
     //
     //关于和帮助
-    connect(ui->helpButton, &QPushButton::clicked, this, &ThemeEditor::HelpButtonClicked);
+    connect(ui->helpButton, &QPushButton::clicked,
+            this, &ThemeEditor::HelpButtonClicked);
 
-    connect(ui->openFolderButton,&QPushButton::clicked, this, &ThemeEditor::OpenFolderButtonClicked);
-    connect(ui->settingsButton,&QPushButton::clicked, this, &ThemeEditor::SettingsButtonClicked);
+    connect(ui->openFolderButton, &QPushButton::clicked,
+            this, &ThemeEditor::OpenFolderButtonClicked);
+
+    connect(ui->settingsButton, &QPushButton::clicked,
+            this, &ThemeEditor::SettingsButtonClicked);
+
+    connect(ui->undoButton, &QPushButton::clicked,
+            this, &ThemeEditor::UndoBtnClicked);
+
+    connect(ui->redoButton, &QPushButton::clicked,
+            this, &ThemeEditor::RedoBtnClicked);
+
+    ui->undoButton->setEnabled(false);
+    ui->redoButton->setEnabled(false);
 
     // themeData->BindOnModified(this,&ThemeEditor::ThemeModified);
     connect(themeData, &ThemeData::Modified, this, &ThemeEditor::ThemeModified);    // 信号与槽修改
@@ -251,6 +264,9 @@ void ThemeEditor::ThemeModified()
     }
 
     gi->setCurrectTheme(themeData);
+
+    ui->redoButton->setEnabled(redoHandler->isRedoable());
+    ui->undoButton->setEnabled(redoHandler->isUndoable());
 }
 
 // 重载窗口关闭事件
@@ -283,29 +299,50 @@ RedoHandler* ThemeEditor::getRedoHandler() {
 
 void ThemeEditor::keyPressEvent(QKeyEvent *event) {
     if (event->matches(QKeySequence::Undo)) {
-        std::cout << "Undo\n";
-        auto undo = redoHandler->undo(themeData);
-        std::cout << "Getting themeData from:" << undo << "\n";
-        if (undo == nullptr) {
-            goto pass;
-        }
-        *themeData = *undo;  // Deep Copy
-        std::cout << "Now loading data\n";
-        mainEditor->ThemeDataChanged(themeData);
-        gi->setCurrectTheme(themeData);
+        loadUndo();
     }
     if (event->matches(QKeySequence::Redo)) {
-        std::cout << "Redo\n";
-        auto redo = redoHandler->redo(themeData);
-        std::cout << "Getting themeData from:" << redo << "\n";
-        if (redo == nullptr) {
-            goto pass;
-        }
-        *themeData = *redo;  // Deep Copy
-        std::cout << "Now loading data\n";
-        mainEditor->ThemeDataChanged(themeData);
-        gi->setCurrectTheme(themeData);
+        loadRedo();
     }
-    pass:
-        QMainWindow::keyPressEvent(event);
+    QMainWindow::keyPressEvent(event);
+}
+
+void ThemeEditor::loadRedo() {
+    std::cout << "Redo\n";
+    auto redo = redoHandler->redo(themeData);
+    std::cout << "Getting themeData from:" << redo << "\n";
+    if (redo == nullptr) {
+        return;
+    }
+    *themeData = *redo;  // Deep Copy
+    std::cout << "Now loading data\n";
+    mainEditor->ThemeDataChanged(themeData);
+    gi->setCurrectTheme(themeData);
+
+    ui->redoButton->setEnabled(redoHandler->isRedoable());
+    ui->undoButton->setEnabled(redoHandler->isUndoable());
+}
+
+void ThemeEditor::loadUndo() {
+    std::cout << "Undo\n";
+    auto undo = redoHandler->undo(themeData);
+    std::cout << "Getting themeData from:" << undo << "\n";
+    if (undo == nullptr) {
+        return;
+    }
+    *themeData = *undo;  // Deep Copy
+    std::cout << "Now loading data\n";
+    mainEditor->ThemeDataChanged(themeData);
+    gi->setCurrectTheme(themeData);
+
+    ui->redoButton->setEnabled(redoHandler->isRedoable());
+    ui->undoButton->setEnabled(redoHandler->isUndoable());
+}
+
+void ThemeEditor::RedoBtnClicked() {
+    loadRedo();
+}
+
+void ThemeEditor::UndoBtnClicked() {
+    loadUndo();
 }

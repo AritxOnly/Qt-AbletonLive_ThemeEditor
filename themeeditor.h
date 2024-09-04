@@ -35,6 +35,8 @@ public:
     void SettingsButtonClicked();
     void ThemeModified();
     void OpacityChanged(int value);
+    void UndoBtnClicked();
+    void RedoBtnClicked();
 
     int windowOpacity = 100;
 
@@ -42,6 +44,9 @@ public:
     void keyPressEvent(QKeyEvent *event) override;
 
     RedoHandler* getRedoHandler();
+
+    void loadUndo();
+    void loadRedo();
 
     void ReloadFileList();
 private:

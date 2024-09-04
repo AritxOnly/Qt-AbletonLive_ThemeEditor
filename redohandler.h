@@ -13,6 +13,8 @@ public:
     void pushFileSnapshot(ThemeData* fileContent);
     ThemeData* undo(ThemeData* current);
     ThemeData* redo(ThemeData* current);
+    bool isUndoable();
+    bool isRedoable();
 
 private:
     std::deque<ThemeData*> m_redoStack;

@@ -74,3 +74,16 @@ ThemeData* RedoHandler::redo(ThemeData* current) {
     return lastSnapshot;
 }
 
+bool RedoHandler::isRedoable() {
+    if (m_redoStackSize == 0)
+        return false;
+    return true;
+}
+
+bool RedoHandler::isUndoable() {
+    if (m_undoStackSize == 0)
+        return false;
+    return true;
+}
+
+
