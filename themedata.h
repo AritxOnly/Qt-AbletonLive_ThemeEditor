@@ -64,6 +64,9 @@ public:
     bool Modify(int i,float f);
     bool Modify(int i,unsigned int f);
 
+    // copy trait
+    ThemeData& operator=(const ThemeData&);
+
 signals:
     void Modified();
 

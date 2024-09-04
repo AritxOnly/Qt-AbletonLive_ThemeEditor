@@ -14,6 +14,7 @@ SOURCES += \
     filehandler.cpp \
     graphicalinterface.cpp \
     main.cpp \
+    redohandler.cpp \
     settingsinterface.cpp \
     themedata.cpp \
     themeeditor.cpp
@@ -24,6 +25,7 @@ HEADERS += \
     filehandler.h \
     graphicalinterface.h \
     qheaders.h \
+    redohandler.h \
     settingsinterface.h \
     themedata.h \
     themeeditor.h

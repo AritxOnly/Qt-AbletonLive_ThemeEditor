@@ -13,6 +13,8 @@ class ThemeEditor;
 }
 QT_END_NAMESPACE
 
+class RedoHandler;
+
 class ThemeEditor : public QMainWindow
 {
     Q_OBJECT
@@ -33,10 +35,18 @@ public:
     void SettingsButtonClicked();
     void ThemeModified();
     void OpacityChanged(int value);
+    void UndoBtnClicked();
+    void RedoBtnClicked();
 
     int windowOpacity = 100;
 
     void closeEvent(QCloseEvent *event) override;
+    void keyPressEvent(QKeyEvent *event) override;
+
+    RedoHandler* getRedoHandler();
+
+    void loadUndo();
+    void loadRedo();
 
     void ReloadFileList();
 private:
@@ -50,6 +60,8 @@ private:
 
     EditorUI* mainEditor;
     GraphicalInterface* gi;
+
+    RedoHandler *redoHandler;
 
     bool modified = false;
 
