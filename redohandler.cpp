@@ -34,10 +34,12 @@ void RedoHandler::pushFileSnapshot(ThemeData* fileContent) {
     // file->SaveData("file.txt");
 }
 
-ThemeData* RedoHandler::undo() {
+ThemeData* RedoHandler::undo(ThemeData* current) {
     if (m_undoStackSize == 0) {
         return nullptr;
     }
+    ThemeData* currentSnapshot = new ThemeData;
+    *currentSnapshot = *current;    // deep copy
     ThemeData* lastSnapshot = m_undoStack.back();
     m_undoStack.pop_back();
     m_undoStackSize--;
@@ -47,15 +49,17 @@ ThemeData* RedoHandler::undo() {
         m_redoStack.pop_front();
         m_redoStackSize--;
     }
-    m_redoStack.push_back(lastSnapshot);
+    m_redoStack.push_back(currentSnapshot);
     m_redoStackSize++;
     return lastSnapshot;
 }
 
-ThemeData* RedoHandler::redo() {
+ThemeData* RedoHandler::redo(ThemeData* current) {
     if (m_redoStackSize == 0) {
         return nullptr;
     }
+    ThemeData* currentSnapshot = new ThemeData;
+    *currentSnapshot = *current;    // deep copy
     ThemeData* lastSnapshot = m_redoStack.back();
     m_redoStack.pop_back();
     m_redoStackSize--;
@@ -65,7 +69,7 @@ ThemeData* RedoHandler::redo() {
         m_undoStack.pop_front();
         m_undoStackSize--;
     }
-    m_undoStack.push_back(lastSnapshot);
+    m_undoStack.push_back(currentSnapshot);
     m_undoStackSize++;
     return lastSnapshot;
 }

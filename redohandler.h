@@ -11,8 +11,8 @@ public:
     RedoHandler();
     ~RedoHandler();
     void pushFileSnapshot(ThemeData* fileContent);
-    ThemeData* undo();
-    ThemeData* redo();
+    ThemeData* undo(ThemeData* current);
+    ThemeData* redo(ThemeData* current);
 
 private:
     std::deque<ThemeData*> m_redoStack;

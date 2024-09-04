@@ -284,7 +284,7 @@ RedoHandler* ThemeEditor::getRedoHandler() {
 void ThemeEditor::keyPressEvent(QKeyEvent *event) {
     if (event->matches(QKeySequence::Undo)) {
         std::cout << "Undo\n";
-        auto undo = redoHandler->undo();
+        auto undo = redoHandler->undo(themeData);
         std::cout << "Getting themeData from:" << undo << "\n";
         if (undo == nullptr) {
             goto pass;
@@ -296,11 +296,13 @@ void ThemeEditor::keyPressEvent(QKeyEvent *event) {
     }
     if (event->matches(QKeySequence::Redo)) {
         std::cout << "Redo\n";
-        auto redo = redoHandler->redo();
+        auto redo = redoHandler->redo(themeData);
+        std::cout << "Getting themeData from:" << redo << "\n";
         if (redo == nullptr) {
             goto pass;
         }
         *themeData = *redo;  // Deep Copy
+        std::cout << "Now loading data\n";
         mainEditor->ThemeDataChanged(themeData);
         gi->setCurrectTheme(themeData);
     }
