@@ -14,6 +14,7 @@ SOURCES += \
     filehandler.cpp \
     graphicalinterface.cpp \
     main.cpp \
+    redohandler.cpp \
     settingsinterface.cpp \
     themedata.cpp \
     themeeditor.cpp
@@ -24,6 +25,7 @@ HEADERS += \
     filehandler.h \
     graphicalinterface.h \
     qheaders.h \
+    redohandler.h \
     settingsinterface.h \
     themedata.h \
     themeeditor.h
@@ -49,3 +51,6 @@ RC_FILE += \
 
 # 编译后生成exe名称设置
 TARGET = AbletonLiveThemeEditor
+
+# MACOS图标
+ICON = resources/icons/logo.icns
