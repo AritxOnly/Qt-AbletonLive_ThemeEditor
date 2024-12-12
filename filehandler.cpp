@@ -13,7 +13,7 @@ bool FileHandler::FindThemeFolder()
     auto cg = ableton.childGroups();
     for(auto& str:cg)
     {
-        if(str[0]=='{')
+        if(!str.isEmpty() && str[0]=='{')
         {
             QSettings st("HKEY_CURRENT_USER\\Software\\Ableton\\"+str, QSettings::NativeFormat);
             QString path = st.value("InstallPath").toString();
@@ -25,6 +25,7 @@ bool FileHandler::FindThemeFolder()
             }
         }
     }
+    return false;
 #endif
 #ifdef Q_OS_MACOS
     // for macOS
