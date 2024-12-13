@@ -54,3 +54,7 @@ TARGET = AbletonLiveThemeEditor
 
 # MACOS图标
 ICON = resources/icons/logo.icns
+
+# macos构建SDK
+QMAKE_MACOSX_DEPLOYMENT_TARGET = 13
+CONFIG += sdk_no_version_check

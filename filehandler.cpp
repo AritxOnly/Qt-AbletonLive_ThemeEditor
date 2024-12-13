@@ -3,7 +3,27 @@
 
 FileHandler::FileHandler()
 {
-    FindThemeFolder();
+    bool succ = FindThemeFolder();
+    if (!succ) {
+        auto path = QFileDialog::getExistingDirectory(nullptr,
+                                                      "Select your Live installation path");
+        auto s = QDir::separator();
+
+        auto pathList = {
+            path,
+            path + s + "Resources" + s + "Themes",
+            path + s + "Contents" + s + "App-Resources" + s + "Themes",
+            path + s + "Themes",
+            path + s + "App-Resources" + s + "Themes",
+        };
+
+        for (const auto& each : pathList) {
+            QDir dir(each);
+            if (dir.exists()) {
+                folderPath = each;
+            }
+        }
+    }
 }
 
 bool FileHandler::FindThemeFolder()
