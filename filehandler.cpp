@@ -4,23 +4,50 @@
 FileHandler::FileHandler()
 {
     bool succ = FindThemeFolder();
+
     if (!succ) {
-        auto path = QFileDialog::getExistingDirectory(nullptr,
-                                                      "Select your Live installation path");
+        auto path =
+#ifdef Q_OS_MACOS
+            QFileDialog::getOpenFileName(nullptr,
+                                         "Select your Live installation (.app) path",
+                                         "/Applications",
+                                         "Applications (*.app)");
+#else
+        QFileDialog::getExistingDirectory(nullptr,
+                                          "Select your Live installation path",
+                                          "",
+                                          QFileDialog::ShowDirsOnly);
+#endif
+
         auto s = QDir::separator();
 
+#ifdef Q_OS_MACOS
+        if (path.isEmpty() && !path.endsWith(".app")) {
+            QMessageBox::warning(nullptr, "Invalid Selection", "Please select a valid .app directory.");
+            return;
+        }
+#endif
+
         auto pathList = {
-            path,
+#ifdef Q_OS_WIN
             path + s + "Resources" + s + "Themes",
+            path + s + ".." + s + "Resources" + s + "Themes",
+#endif
+            path + s + ".." + s + "Themes",
+#ifdef Q_OS_MACOS
             path + s + "Contents" + s + "App-Resources" + s + "Themes",
-            path + s + "Themes",
             path + s + "App-Resources" + s + "Themes",
+            path + s + ".." + s + "App-Resources" + s + "Themes",
+#endif
+            path + s + "Themes",
+            path,
         };
 
         for (const auto& each : pathList) {
             QDir dir(each);
             if (dir.exists()) {
                 folderPath = each;
+                break;
             }
         }
     }
